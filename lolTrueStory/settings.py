@@ -63,21 +63,10 @@ WSGI_APPLICATION = 'lolTrueStory.wsgi.application'
     }
 }"""
 
-
-import logging
-logging.basicConfig(level=logging.DEBUG, filename='python.log')
-
-
-f = open('dbsettings.ini', 'r')
-dbsettings = {}
-for line in f:
-    k, v = line.strip().split('=')
-    dbsettings[k.strip()] = v.strip()
-f.close()
-         
-DATABASES = {
-    'default': dbsettings
-}
+try:
+    from dbsettings import *
+except ImportError:
+    pass
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
