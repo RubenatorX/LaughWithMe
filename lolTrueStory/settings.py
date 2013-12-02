@@ -63,6 +63,7 @@ WSGI_APPLICATION = 'lolTrueStory.wsgi.application'
     }
 }"""
 
+
 f = open('dbsettings.ini', 'r')
 dbsettings = {}
 for line in f:
