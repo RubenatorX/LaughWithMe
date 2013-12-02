@@ -64,6 +64,10 @@ WSGI_APPLICATION = 'lolTrueStory.wsgi.application'
 }"""
 
 
+import logging
+logging.basicConfig(level=logging.DEBUG, filename='python.log')
+
+
 f = open('dbsettings.ini', 'r')
 dbsettings = {}
 for line in f:
