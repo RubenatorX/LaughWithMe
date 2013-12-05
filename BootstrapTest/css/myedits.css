@@ -1,0 +1,12 @@
+.btn-success{color:#fff;background-color:#22b5da;border-color:#22b5da;color:#ffffff;font-weight:bold}
+
+.btn-success:hover,.btn-success:focus,.btn-success:active,.btn-success.active,.open .dropdown-toggle.btn-success{color:#fff;background-color:#18829D;border-color:#18829D}
+
+.row-btm{margin-right:-15px;margin-left:-15px;margin-top:30px}
+
+.navbar-brand{float:left;padding:15px 25px;font-size:18px;line-height:20px}
+
+.jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
+
+body{height:100%}
+
