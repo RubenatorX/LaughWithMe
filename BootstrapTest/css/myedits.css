@@ -8,5 +8,17 @@
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
 
-body{height:100%}
 
+html,
+body {
+   margin:0;
+   padding:0;
+   height:100%;
+}
+
+footer {
+   position:absolute;
+   bottom:0;
+   width:100%;
+   height:2px;   /* Height of the footer */
+}
