@@ -8,6 +8,8 @@
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#222}
 
+.logolesspage{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:inherit;background-color:inherit}
+
 
 html,
 body {
