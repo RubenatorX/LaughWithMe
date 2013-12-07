@@ -9,6 +9,8 @@ def WelcomeView(request):
     return render_to_response('mainsite/welcome.html')
 def AboutView(request, ignore):
     return render_to_response('mainsite/about.html')
+def LoginView(request, ignore):
+    return render_to_response('mainsite/login.html')
 
 '''def RegistrationView(request, ignore):
     return render_to_response('mainsite/registration.html')'''
