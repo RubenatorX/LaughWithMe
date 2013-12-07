@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Manager
 from django.db.models.query import QuerySet
-
+'''
 # Create your models here.
 class UserData(models.Model):
     email = models.CharField(max_length=254, validators=[validate_email])
@@ -45,6 +45,7 @@ class CaseInsensitiveQuerySet(QuerySet, fieldnames):
 class CaseInsensitiveManager(Manager, fieldnames):
     def get_query_set(self):
         return TagCaseInsensitiveQuerySet(self.model, fieldnames)
+'''
 '''
 #example
 class Tags(models.Model):
