@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
+from django import forms
 
 # Create your views here.
 
@@ -8,9 +9,58 @@ def WelcomeView(request):
     return render_to_response('mainsite/welcome.html')
 def AboutView(request, ignore):
     return render_to_response('mainsite/about.html')
-def RegistrationView(request, ignore):
-    return render_to_response('mainsite/registration.html')
 
+'''def RegistrationView(request, ignore):
+    return render_to_response('mainsite/registration.html')'''
+def RegistrationView(request, ignore):
+    if request.method == 'POST': # If the form has been submitted...
+        form = RegistrationForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            # ...
+            return HttpResponseRedirect('/thanks/') # Redirect after POST
+    else:
+        form = RegistrationForm() # An unbound form
+
+    return render(request, 'mainsite/registration.html', {
+        'form': form,
+    })
+
+class RegistrationForm(forms.Form):
+    email = forms.EmailField(max_length=254, min_length=7,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Email',
+                'class':'form-control',
+            }
+        )
+    )
+    screenname = forms.CharField(min_length=5, max_length=25,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Screen Name',
+                'class':'form-control',
+            }
+        )
+    )
+    password = forms.CharField(max_length=32,
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'placeholder':'password',
+                'class':'form-control',
+            }
+        )
+    )
+    passwordconfirm = forms.CharField(max_length=32,
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'placeholder':'confirm password',
+                'class':'form-control',
+            }
+        )
+    )
 
 '''from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
