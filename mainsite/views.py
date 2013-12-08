@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django import forms
+from django.contrib.auth.models import User
 
 # Create your views here.
 
 
 def WelcomeView(request):
-    return render_to_response('mainsite/welcome.html')
+    if request.user.is_authenticated():
+        pass# Do something for authenticated users.
+    else:
+        # Do something for anonymous users.
+        return render_to_response('mainsite/welcome.html')
 def AboutView(request, ignore):
     return render_to_response('mainsite/about.html')
 
@@ -16,8 +21,15 @@ def RegistrationView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
         form = RegistrationForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+            ## check for duplicate Names etc.
+
             # Process the data in form.cleaned_data
             # ...
+            user = User.objects.create_user(username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'])
+            #user.save()
+            ##Do other stuff
             return HttpResponseRedirect('/thanks/') # Redirect after POST
     else:
         form = RegistrationForm() # An unbound form

@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
     'polls',
     'mainsite',
 )
@@ -47,6 +48,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.FailedLoginMiddleware',
 )
 
 ROOT_URLCONF = 'lolTrueStory.urls'
@@ -89,3 +91,46 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+# The number of login attempts allowed before a record is
+#created for the failed logins.
+#Default= 3
+AXES_LOGIN_FAILURE_LIMIT=3
+
+# After the number of allowed login attempts are exceeded,
+#should we lock out this IP (and optional user agent)?
+#Default: True
+AXES_LOCK_OUT_AT_FAILURE=5
+
+# If True, lock out / log based on an IP address AND a
+#user agent. This means requests from different user
+#agents but from the same IP are treated differently.
+#Default: False                           
+AXES_USE_USER_AGENT=False
+
+# If set, defines a period of inactivity after which
+#old failed login attempts will be forgotten. Can be
+#set to a python timedelta object or an integer. If an
+#integer, will be interpreted as a number of hours.
+#Default: None
+AXES_COOLOFF_TIME=1
+
+# If set, specifies a logging mechanism for axes to use.
+#Default: 'axes.watch_login'
+#AXES_LOGGER=
+
+# If set, specifies a template to render when a user is
+#locked out. Template receives cooloff_time and
+#failure_limit as context variables.
+#Default: None
+AXES_LOCKOUT_TEMPLATE="mainsite/login.html"
+
+# If set, specifies a URL to redirect to on lockout. If
+#both AXES_LOCKOUT_TEMPLATE and AXES_LOCKOUT_URL are set,
+#the template will be used.
+#Default: None
+#AXES_LOCKOUT_URL=
+
+# If True, you'll see slightly more logging for Axes.
+#Default: True
+AXES_VERBOSE=True
