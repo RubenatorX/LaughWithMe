@@ -10,30 +10,43 @@
         <h1>Registration</h1>
         <p>Ready to share your stories?<br>Fill in the information below to create an account! </p>
 	<form action="" method="post">{% csrf_token %}
-	    {{ form.non_field_errors }}
+        {% if form.non_field_errors %}
+	      <div class="errorcallout">{{ form.non_field_errors }}</div>
+        {% endif %}
+        
             <div class="form-group">
               Email: <br>
-	      {{ form.email.errors }}
               <!--<input type="text" placeholder="Email" class="form-control">-->
 	      {{ form.email }}
+          {% if form.email.errors %}
+            <div class="errorcallout"><b>{{ form.email.errors }}</b><b class="topnotch"/></div>
+          {% endif %}
             </div>
+            
             <div class="form-group">
               Screen Name: <br>
-	      {{ form.screenname.errors }}
               <!--<input type="text" placeholder="Screen Name" class="form-control">-->
 	      {{ form.screenname }}
+          {% if form.screenname.errors %}
+	      <div class="errorcallout">{{ form.screenname.errors }}<b class="topnotch"/></div>
+          {% endif %}
             </div>
+            
             <div class="form-group">
               Password: <br>
-	      {{ form.password.errors }}
               <!--<input type="password" placeholder="password" class="form-control">-->
 	      {{ form.password }}
             </div>
             <div class="form-group">
               <!--<input type="password" placeholder="confirm password" class="form-control">-->
 	      {{ form.passwordconfirm }}
+          {% if form.password.errors %}
+	      <div class="errorcallout">{{ form.password.errors }}<b class="topnotch"/></div>
+          {% endif %}
+
             </div>
             <button type="submit" class="btn btn-success">Complete Registration</button>
+
 	</form>
       </div>
       <div class="col-md-3"></div>

@@ -14,6 +14,8 @@ def WelcomeView(request):
         return render_to_response('mainsite/welcome.html')
 def AboutView(request, ignore):
     return render_to_response('mainsite/about.html')
+def LoginView(request, ignore):
+    return render_to_response('mainsite/login.html')
 
 '''def RegistrationView(request, ignore):
     return render_to_response('mainsite/registration.html')'''
@@ -73,6 +75,17 @@ class RegistrationForm(forms.Form):
             }
         )
     )
+    def clean(self):
+        form_data = self.cleaned_data
+        if 'password' in form_data and 'passwordconfirm' in form_data:
+            if form_data['password'] != form_data['passwordconfirm']:
+                self._errors["password"] = "Passwords do not match" 
+                #raise forms.ValidationError()
+                del form_data['password']
+        else :
+            self._errors["password"] = "These fields are required" 
+        return form_data
+    
 
 '''from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
