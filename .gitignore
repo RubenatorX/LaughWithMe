@@ -220,3 +220,4 @@ dbsettings.ini
 update/
 lolTrueStory/dbsettings.py
 *.pyc
+lolTrueStory/uploadsettings.py

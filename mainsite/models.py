@@ -8,6 +8,7 @@ from django.core.validators import MinLengthValidator
 from django.core.validators import MaxLengthValidator
 from django.core.validators import RegexValidator
 
+
 '''
 #needs testing
 class CaseInsensitiveQuerySet(QuerySet, fieldnames):
@@ -24,12 +25,25 @@ class CaseInsensitiveManager(Manager, fieldnames):
 
 # Create your models here.
 class UserData(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User, primary_key=True)
     screenname = models.CharField(max_length=25, unique=True)
     favorites = models.ManyToManyField('self', through='Favorite', 
                                            symmetrical=False, 
                                            related_name='userFavorites')
     #objects = CaseInsensitiveManager(['screenname'])
+    def addFavorite(self, target):
+        created = Favorite.objects.get_or_create(
+            user=self,
+            favorite=target)
+        #Sanity Check?
+        return created
+    def delFavorite(self, target):
+        toDelete = Favorite.objects.filter(
+            user=self,
+            favorite=target)
+        #Sanity Check?
+        toDelete.delete()
+        return
     def getFavorites(self):
         return self.userFavorites.filter(
             favoritee__favoriter=self)
@@ -50,19 +64,6 @@ class Post(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(UserData, related_name='favoriter')
     favorite = models.ForeignKey(UserData, related_name='favoritee')
-    def addFavorite(self, target):
-        created = Favorite.objects.get_or_create(
-            user=self,
-            favorite=target)
-        #Sanity Check?
-        return created
-    def delFavorite(self, target):
-        toDelete = Favorite.objects.filter(
-            user=self,
-            favorite=target)
-        #Sanity Check?
-        toDelete.delete()
-        return
 class Comment(models.Model):
     post = models.ForeignKey(Post)
     commenter = models.ForeignKey(UserData)

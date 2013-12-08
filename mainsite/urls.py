@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^about(/|$)', views.AboutView, name='AboutView'),
     url(r'^register(/|$)', views.RegistrationView, name='RegistrationView'),
     url(r'^login(/|$)', views.LoginView, name='LoginView'),
+    url(r'^logout(/|$)', views.LogoutView, name='LogoutView'),
 )

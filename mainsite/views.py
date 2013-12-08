@@ -4,6 +4,9 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
+from django.forms.util import ErrorList
+from models import *
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -11,19 +14,17 @@ from django.shortcuts import redirect
 def WelcomeView(request):
     if request.user.is_authenticated():
         # Do something for authenticated users.
-        return render(request, 'mainsite/temploggedin.html', {'user':request.user})
+        return render(request, 'mainsite/base-loggedin.html', {'userdata':request.user.userdata})
     else:
         # Do something for anonymous users.
-        form = LoginForm()
-        return render(request, 'mainsite/welcome.html',{'form': form})
+        return render(request, 'mainsite/welcome.html',{'loginform': LoginForm()})
 def AboutView(request, ignore):
-    form = LoginForm()
-    return render(request, 'mainsite/about.html',{'form': form})
+    return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
 def LoginView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
-        form = LoginForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
-            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+        loginform = LoginForm(request.POST) # A form bound to the POST data
+        if loginform.is_valid(): # All validation rules pass
+            user = authenticate(username=loginform.cleaned_data['email'], password=loginform.cleaned_data['password'])
             if user is not None:
                 if user.is_active:
                     #Successful login
@@ -31,22 +32,27 @@ def LoginView(request, ignore):
                     return redirect('/')
                 else:
                     # Account Disabled
+                    loginError = "Your account has been disabled"
                     return render(request, 'mainsite/login.html', {
-                        'form': form,
+                        'loginform': loginform,
+                        'loginError' : loginError,
                         })
-        #bad login
+        #Bad login
         loginError = "The username and/or password was incorrect. Please try again."
         return render(request, 'mainsite/login.html', {
-                'form': form,
+                'loginform': loginform,
                 'loginError' : loginError,
                 })
             
     else:
-        form = LoginForm() # An unbound form
+        loginform = LoginForm() # An unbound form
 
     return render(request, 'mainsite/login.html', {
-        'form': form,
+        'loginform': loginform,
     })
+def LogoutView(request, ignore):
+    logout(request)
+    return redirect('/')
 
 
 '''def RegistrationView(request, ignore):
@@ -55,26 +61,26 @@ def RegistrationView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
         form = RegistrationForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            ## check for duplicate Names etc.
 
-            # Process the data in form.cleaned_data
-            # ...
             user = User.objects.create_user(username=form.cleaned_data['email'],
                 email=form.cleaned_data['email'],
                 password=form.cleaned_data['password'])
-            #user.save()
-            #user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
-            #Sanity Check?
+            user.save()
+            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            ##Sanity Check?
 
-            #login(request, user)
+            login(request, user)
             
             ##Do other stuff (like save screenname)
+            userdata = UserData(user=user, screenname=form.cleaned_data['screenname'])
+            userdata.save()
             return redirect('/') # Redirect after POST
     else:
         form = RegistrationForm() # An unbound form
 
     return render(request, 'mainsite/registration.html', {
-        'form': form,
+        'loginform': LoginForm(),
+        'form':form,
     })
 
 class LoginForm(forms.Form):
@@ -134,54 +140,40 @@ class RegistrationForm(forms.Form):
         form_data = self.cleaned_data
         if 'password' in form_data and 'passwordconfirm' in form_data:
             if form_data['password'] != form_data['passwordconfirm']:
-                self._errors["password"] = "Passwords do not match" 
-                #raise forms.ValidationError()
+                self._errors["password"]= "Passwords do not match"
                 del form_data['password']
         else :
-            self._errors["password"] = "These fields are required" 
+            self._errors["password"]= "These fields are required"
         return form_data
+    def clean_screenname(self):
+        form_data = self.cleaned_data
+        if 'screenname' in self.cleaned_data:
+            name = self.cleaned_data['screenname']
+            if len(UserData.objects.filter(screenname__iexact=name)) > 0:
+                self._errors['screenname']= 'This Screenname is already taken, try another.'
+        else:
+            self._errors["screenname"]= "A Screen Name is required"
+        return form_data['screenname']
+    def clean_email(self):
+        form_data = self.cleaned_data
+        if 'email' in self.cleaned_data:
+            name = self.cleaned_data['email']
+            if len(User.objects.filter(username__iexact=name)) > 0:
+                self._errors['email']= "There is already an account associated with this email."
+        else:
+            self._errors["email"]= "An email is required."
+        return form_data['email']
+        
     
-
-'''from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
-from django.http import Http404
-from polls.models import Poll, Choice
-from django.views import generic
-
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_poll_list'
-
-    def get_queryset(self):
-        """Return the last five published polls."""
-        return Poll.objects.order_by('-pub_date')[:5]
-
-
-class DetailView(generic.DetailView):
-    model = Poll
-    template_name = 'polls/detail.html'
-
-
-class ResultsView(generic.DetailView):
-    model = Poll
-    template_name = 'polls/results.html'
-
-def vote(request, poll_id):
-    p = get_object_or_404(Poll, pk=poll_id)
-    try:
-        selected_choice = p.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the poll voting form.
-        return render(request, 'polls/detail.html', {
-            'poll': p,
-            'error_message': "You didn't select a choice.",
-        })
+'''#File Upload example
+def upload_file(request):
+    if request.method == 'POST':
+        form = ModelFormWithFileField(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            return HttpResponseRedirect('/success/url/')
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+        form = ModelFormWithFileField()
+    return render(request, 'upload.html', {'form': form})
 '''

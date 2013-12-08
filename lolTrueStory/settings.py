@@ -92,6 +92,20 @@ STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
+
+try:
+    from uploadsettings import *
+except ImportError:
+    pass
+
+#SESSION_COOKIE_AGE= #Default: 1209600 (in seconds = 2 weeks)
+#SESSION_EXPIRE_AT_BROWSER_CLOSE= #Default: False
+
+
+
+
+#AXES
+
 # The number of login attempts allowed before a record is
 #created for the failed logins.
 #Default= 3
