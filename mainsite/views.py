@@ -63,8 +63,13 @@ def RegistrationView(request, ignore):
                 email=form.cleaned_data['email'],
                 password=form.cleaned_data['password'])
             #user.save()
-            ##Do other stuff
-            return HttpResponseRedirect('/thanks/') # Redirect after POST
+            #user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            #Sanity Check?
+
+            #login(request, user)
+            
+            ##Do other stuff (like save screenname)
+            return redirect('/') # Redirect after POST
     else:
         form = RegistrationForm() # An unbound form
 
