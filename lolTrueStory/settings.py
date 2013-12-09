@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'axes',
+    'captcha',
     'polls',
     'mainsite',
 )
@@ -101,7 +102,10 @@ except ImportError:
 #SESSION_COOKIE_AGE= #Default: 1209600 (in seconds = 2 weeks)
 #SESSION_EXPIRE_AT_BROWSER_CLOSE= #Default: False
 
-
+#reCAPTCHA
+RECAPTCHA_PUBLIC_KEY = '6Lf2a-oSAAAAAFV9sduD7CiI7x_L0314kx6YPA0F'
+RECAPTCHA_PRIVATE_KEY = '6Lf2a-oSAAAAAGYKLbhMELz4h3vJRG3FJlDkaijW'
+RECAPTCHA_USE_SSL = True
 
 
 #AXES
@@ -109,12 +113,12 @@ except ImportError:
 # The number of login attempts allowed before a record is
 #created for the failed logins.
 #Default= 3
-AXES_LOGIN_FAILURE_LIMIT=3
+AXES_LOGIN_FAILURE_LIMIT=7
 
 # After the number of allowed login attempts are exceeded,
 #should we lock out this IP (and optional user agent)?
 #Default: True
-AXES_LOCK_OUT_AT_FAILURE=5
+AXES_LOCK_OUT_AT_FAILURE=True
 
 # If True, lock out / log based on an IP address AND a
 #user agent. This means requests from different user

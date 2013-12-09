@@ -54,13 +54,18 @@ class Tag(models.Model):
                 'Must be a letter followed by letters and numbers.',
                 'Invalid Hashtag'
             )])
+    count = models.IntegerField()
     #objects = CaseInsensitiveManager(['tag'])
+    #duplicate
+    #add
+    #remove
 class Post(models.Model):
     user = models.ForeignKey(UserData)
     title = models.CharField(max_length=50, validators=[MinLengthValidator(1)])
     text = models.TextField(validators=[MaxLengthValidator(2000)])
     #image = None ###
     tags = models.ManyToManyField(Tag)
+    date = models.DateTimeField(auto_now_add=True)
 class Favorite(models.Model):
     user = models.ForeignKey(UserData, related_name='favoriter')
     favorite = models.ForeignKey(UserData, related_name='favoritee')
@@ -68,6 +73,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post)
     commenter = models.ForeignKey(UserData)
     text = models.TextField(validators=[MaxLengthValidator(500)])
+    date = models.DateTimeField(auto_now_add=True)
     ###type = 
 class Notification(models.Model):
     user = models.ForeignKey(UserData)

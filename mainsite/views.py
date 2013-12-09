@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.forms.util import ErrorList
 from models import *
 from django.contrib.auth import logout
+from captcha.fields import ReCaptchaField
 
 # Create your views here.
 
@@ -87,7 +88,7 @@ class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
         widget=forms.TextInput(
             attrs={
-                'placeholder':'Email',
+                'placeholder':'email',
                 'class':'form-control',
             }
         )
@@ -136,6 +137,8 @@ class RegistrationForm(forms.Form):
             }
         )
     )
+    captcha = ReCaptchaField()
+    
     def clean(self):
         form_data = self.cleaned_data
         if 'password' in form_data and 'passwordconfirm' in form_data:
