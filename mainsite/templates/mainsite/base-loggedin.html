@@ -1,17 +1,24 @@
 {% extends 'mainsite/base.html' %}
 {% load static %} 
 {% block navbar-left %}
+<div class="navbar-header">
+    <input type="text" placeholder="search" class="form-control">
+</div>
 {% endblock %}
 {% block navbar-right %}
 <form class='navbar-form navbar-right'>
+    <a class="navbar-brand" href="newPost">My Posts</a>
+    <a class="navbar-brand" href="#">Trending</a>
+    <a class="navbar-brand" href="#">Favorites</a>
+    <a class="navbar-brand" href="#">Matches</a>
 <div class="form-group">
-	<font color="white">{{ userdata.screenname }}&nbsp;</font>
+	<font color="white">{{ userdata.screenname }}&nbsp;&nbsp;&nbsp;</font>
 </div>
 <div class="form-group">
-	<a href=""><img Width=30% right-margin=2px src="{% static 'mainsite/images/settings.png' %}" alt="Settings"></a>
+	<a href=""><i class="fa fa-cogs fa-2x" alt="settings"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 <div class="form-group">
-	<a href="/logout"><img Width=125% src="{% static 'mainsite/images/logout.png' %}" alt="Logout"></a>
+	<a href="/logout"><i class="fa fa-sign-out fa-2x" alt="Logout"></i></a>
 </div>
 </form>
 {% endblock %}

@@ -21,6 +21,8 @@ def WelcomeView(request):
         return render(request, 'mainsite/welcome.html',{'loginform': LoginForm()})
 def AboutView(request, ignore):
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
+def NewPostView(request, ignore):
+    return render(request, 'mainsite/newPost.html')
 def LoginView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
         loginform = LoginForm(request.POST) # A form bound to the POST data
