@@ -15,14 +15,46 @@ from captcha.fields import ReCaptchaField
 def WelcomeView(request):
     if request.user.is_authenticated():
         # Do something for authenticated users.
-        return render(request, 'mainsite/base-loggedin.html', {'userdata':request.user.userdata})
+        return DefaultView(request)
     else:
         # Do something for anonymous users.
         return render(request, 'mainsite/welcome.html',{'loginform': LoginForm()})
+def DefaultView:
+    if request.user.is_authenticated():
+        pass
+        #handle request.user.userdata.defaultview
+        return render(request, 'mainsite/base-loggedin.html', {'userdata':request.user.userdata}) #temp
+    else:
+        return redirect('/')
 def AboutView(request, ignore):
+    ##What do we do if they are logged in and go to the About page? (specifically with the sign in bar?)
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
+def MyPostsView(request, ignore):
+        if request.user.is_authenticated():
+            if request.method == 'POST': # Modify
+                form = NewPostForm(request.POST)
+                if form.is_valid():
+                    pass #process stuff
+                else:
+                    pass #bad error
+            pass #return normal stuff
+        else:
+            return redirect('/')    
 def NewPostView(request, ignore):
-    return render(request, 'mainsite/newPost.html')
+    if request.user.is_authenticated():
+        if request.method == 'POST': # If the form has been submitted...
+            form = NewPostForm(request.POST)
+            if form.is_valid():
+                pass
+                #process stuff
+            else:
+                #return form with errors
+                return render(request, 'mainsite/newPost.html',{'form':form})
+        else:
+            #return empty form
+            return render(request, 'mainsite/newPost.html',{'form':NewPostForm()})
+    else:
+        return redirect('/')
 def LoginView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
         loginform = LoginForm(request.POST) # A form bound to the POST data

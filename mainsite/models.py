@@ -30,6 +30,7 @@ class UserData(models.Model):
     favorites = models.ManyToManyField('self', through='Favorite', 
                                            symmetrical=False, 
                                            related_name='userFavorites')
+    ##defaultview = ???
     #objects = CaseInsensitiveManager(['screenname'])
     def addFavorite(self, target):
         created = Favorite.objects.get_or_create(
