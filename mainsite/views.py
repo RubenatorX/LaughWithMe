@@ -19,7 +19,7 @@ def WelcomeView(request):
     else:
         # Do something for anonymous users.
         return render(request, 'mainsite/welcome.html',{'loginform': LoginForm()})
-def DefaultView:
+def DefaultView(request):
     if request.user.is_authenticated():
         pass
         #handle request.user.userdata.defaultview
@@ -29,7 +29,7 @@ def DefaultView:
 def AboutView(request, ignore):
     ##What do we do if they are logged in and go to the About page? (specifically with the sign in bar?)
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
-def MyPostsView(request, ignore):
+def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
             if request.method == 'POST': # Modify
                 form = NewPostForm(request.POST)
