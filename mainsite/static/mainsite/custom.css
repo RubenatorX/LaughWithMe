@@ -115,3 +115,6 @@ footer {
    bottom:0;
    height:2px;   /* Height of the footer */
 }
+
+
+a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }

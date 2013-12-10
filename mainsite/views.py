@@ -43,16 +43,16 @@ def MyPostsView(request, ignore): ## incomplete
 def NewPostView(request, ignore):
     if request.user.is_authenticated():
         if request.method == 'POST': # If the form has been submitted...
-            form = NewPostForm(request.POST)
-            if form.is_valid():
+            #form = NewPostForm(request.POST)
+            if True:#'''form.is_valid():'''
                 pass
                 #process stuff
             else:
                 #return form with errors
-                return render(request, 'mainsite/newPost.html',{'form':form})
+                return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata})#''',{'form':form}''')
         else:
             #return empty form
-            return render(request, 'mainsite/newPost.html',{'form':NewPostForm()})
+            return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata})#''',{'form':NewPostForm()}''')
     else:
         return redirect('/')
 def LoginView(request, ignore):

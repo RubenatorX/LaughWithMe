@@ -2,23 +2,24 @@
 {% load static %} 
 {% block navbar-left %}
 <div class="navbar-header">
-    <input type="text" placeholder="search" class="form-control">
-</div>
-{% endblock %}
-{% block navbar-right %}
-<form class='navbar-form navbar-right'>
 <div class="form-group">
+<form>
     <a class="navbar-brand" href="newPost">My Posts</a>
     <a class="navbar-brand" href="#">Trending</a>
     <a class="navbar-brand" href="#">Favorites</a>
     <a class="navbar-brand" href="#">Matches</a>
-    <a class="navbar-brand" href="#">{{ userdata.screenname }}</a>
+</form>
+</div>
+</div>
+{% endblock %}
+{% block navbar-right %}
+<form class='navbar-form navbar-right'>
+<font color="#ffffff">{{ userdata.screenname }}&nbsp;&nbsp;&nbsp;&nbsp;</font>
+<div class="form-group"> 
+	<a class="iconnavbuttons" href=""><i class="fa fa-cogs fa-2x" alt="settings"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 <div class="form-group">
-	<a href=""><i class="fa fa-cogs fa-2x" alt="settings"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-</div>
-<div class="form-group">
-	<a href="/logout"><i class="fa fa-sign-out fa-2x" alt="Logout"></i></a>
+	<a class="iconnavbuttons" href="/logout"><i class="fa fa-sign-out fa-2x" alt="Logout"></i></a>
 </div>
 </form>
 {% endblock %}
