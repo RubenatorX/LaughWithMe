@@ -39,6 +39,16 @@ def MyPostsView(request, ignore): ## incomplete
                     pass #bad error
             pass #return normal stuff
             posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
+
+            for post in posts:
+                if post.user.pk == request.user.pk:
+                    post.candelete = True
+                    for comment in post.comment_set.all():
+                        comment.candelete = True
+                else:
+                    for comment in post.comment_set.all():
+                        if comment.commenter.pk == request.user.pk:
+                            comment.candelete = True
             
             return render(request, 'mainsite/myPosts.html', {'posts':posts})
         else:
