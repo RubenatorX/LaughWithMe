@@ -38,6 +38,9 @@ def MyPostsView(request, ignore): ## incomplete
                 else:
                     pass #bad error
             pass #return normal stuff
+            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
+            
+            return render(request, 'mainsite/myPosts.html', {'posts':posts})
         else:
             return redirect('/')    
 def NewPostView(request, ignore):

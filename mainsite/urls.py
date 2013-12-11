@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^login(/|$)', watch_login(views.LoginView), name='LoginView'),
     url(r'^logout(/|$)', views.LogoutView, name='LogoutView'),
     url(r'^newPost(/|$)', views.NewPostView, name='NewPostView'),
+    url(r'^myposts(/|$)', views.MyPostsView, name='MyPostsView'),
 )
