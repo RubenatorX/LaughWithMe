@@ -10,4 +10,6 @@ urlpatterns = patterns('',
     url(r'^logout(/|$)', views.LogoutView, name='LogoutView'),
     url(r'^newPost(/|$)', views.NewPostView, name='NewPostView'),
     url(r'^myposts(/|$)', views.MyPostsView, name='MyPostsView'),
+    url(r'^user/(\w+)', views.PersonView, name='PersonView'),
+    url(r'^post/(\d+)', views.PostView, name='PostView'),
 )
