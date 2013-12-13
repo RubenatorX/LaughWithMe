@@ -20,10 +20,19 @@ def WelcomeView(request):
         # Do something for anonymous users.
         return render(request, 'mainsite/welcome.html',{'loginform': LoginForm()})
 def DefaultView(request):
+    ignore = 'NULL'
     if request.user.is_authenticated():
-        pass
-        #handle request.user.userdata.defaultview
-        return render(request, 'mainsite/base-loggedin.html', {'userdata':request.user.userdata}) #temp
+        v = request.user.userdata.defaultview
+        if v == UserData.DEFAULT_MYPOSTS:
+            return MyPostsView(request, ignore)
+        elif v == UserData.DEFAULT_TRENDING:
+            return MyPostsView(request, ignore)###
+        elif v == UserData.DEFAULT_FAVORITES:
+            return MyPostsView(request, ignore)
+        elif v == UserData.DEFAULT_MATCHES:
+            return MyPostsView(request, ignore)###
+        else:            
+            return MyPostsView(request, ignore)##
     else:
         return redirect('/')
 def AboutView(request, ignore):
@@ -50,7 +59,7 @@ def MyPostsView(request, ignore): ## incomplete
                         if comment.commenter.pk == request.user.pk:
                             comment.candelete = True
             
-            return render(request, 'mainsite/myPosts.html', {'posts':posts})
+            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata})
         else:
             return redirect('/')    
 def NewPostView(request, ignore):

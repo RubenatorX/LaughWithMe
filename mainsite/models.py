@@ -30,8 +30,19 @@ class UserData(models.Model):
     favorites = models.ManyToManyField('self', through='Favorite', 
                                            symmetrical=False, 
                                            related_name='userFavorites')
-    ##defaultview = ???
-    #objects = CaseInsensitiveManager(['screenname'])
+    DEFAULT_FAVORITES = 'Fav'
+    DEFAULT_MYPOSTS = 'MP'
+    DEFAULT_TRENDING = 'Trd'
+    DEFAULT_MATCHES = 'Mtch'
+    DEFAULT_VIEW_CHOICES = (
+        (DEFAULT_MYPOSTS, 'My Posts'),
+        (DEFAULT_TRENDING, 'Trending'),
+        (DEFAULT_FAVORITES, 'Favorites'),
+        (DEFAULT_MATCHES, 'Matches'),
+    )
+    defaultview = models.CharField(max_length=5,
+                                      choices=DEFAULT_VIEW_CHOICES,
+                                      default=DEFAULT_TRENDING)
     def addFavorite(self, target):
         created = Favorite.objects.get_or_create(
             user=self,
@@ -56,7 +67,6 @@ class Tag(models.Model):
                 'Invalid Hashtag'
             )])
     count = models.IntegerField()
-    #objects = CaseInsensitiveManager(['tag'])
     #duplicate
     #add
     #remove
@@ -64,7 +74,9 @@ class Post(models.Model):
     user = models.ForeignKey(UserData)
     title = models.CharField(max_length=50, validators=[MinLengthValidator(1)])
     text = models.TextField(validators=[MaxLengthValidator(2000)])
-    #image = None ###
+    def imagepath(self, originalFilename):
+        pass
+    image = models.ImageField(upload_to=imagepath)
     tags = models.ManyToManyField(Tag)
     date = models.DateTimeField(auto_now_add=True)
 class Favorite(models.Model):
@@ -75,7 +87,18 @@ class Comment(models.Model):
     commenter = models.ForeignKey(UserData)
     text = models.TextField(validators=[MaxLengthValidator(500)])
     date = models.DateTimeField(auto_now_add=True)
-    ###type = 
+
+    COMMENT_NONE = 'none',
+    COMMENT_LAUGHWITH = 'Lw/',
+    COMMENT_PITY = 'pity',
+    COMMENT_TYPE_CHOICES = (
+        (COMMENT_NONE, 'None'),
+        (COMMENT_LAUGHWITH, 'LaughWith'),
+        (COMMENT_PITY, 'Pity'),
+    )
+    type = models.CharField(max_length=5,
+                            choices=COMMENT_TYPE_CHOICES,
+                            default=COMMENT_NONE)
 class Notification(models.Model):
     user = models.ForeignKey(UserData)
     activity = models.ForeignKey(Comment)

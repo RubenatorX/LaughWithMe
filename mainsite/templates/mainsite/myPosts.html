@@ -1,3 +1,5 @@
+{% extends 'mainsite/base-loggedin.html' %}
+{% block body %}
 <table>
 {% for post in posts %}
 	<tr>
@@ -7,3 +9,4 @@
 	</tr>
 {% endfor %}
 </table>
+{% endblock %}

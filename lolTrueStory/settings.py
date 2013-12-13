@@ -99,6 +99,7 @@ try:
 except ImportError:
     pass
 
+
 #SESSION_COOKIE_AGE= #Default: 1209600 (in seconds = 2 weeks)
 #SESSION_EXPIRE_AT_BROWSER_CLOSE= #Default: False
 
