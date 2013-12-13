@@ -174,7 +174,43 @@ def PersonView(request, username): #testing
     
     return render(request, 'mainsite/myPosts.html')
 
-    
+def PostView(request, postid):
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            form = NewPostForm(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error
+        else:
+            pass #return normal stuff
+            ##sanatize the postid if necessary here
+            pass
+            try:
+                post = Post.objects.all().get(pk=int(postid))#.prefetch_related('post', 'comment_set__commenter', 'tags')
+            except:
+                post = None
+            if post != None:
+                #posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
+                #for post in posts:
+                if post.user.pk == request.user.pk:
+                    post.candelete = True
+                    for comment in post.comment_set.all():
+                        comment.candelete = True
+                else:
+                    for comment in post.comment_set.all():
+                        if comment.commenter.pk == request.user.pk:
+                            comment.candelete = True
+                return render(request, 'mainsite/post.html', {'post':post})
+            else:
+                pass
+                message = "post not found " + postid #temp
+                return render(request, 'mainsite/message.html', {'message':message}) #temp
+                ##run some sort of search
+    else:
+        return redirect('/')
+    return render(request, 'mainsite/myPosts.html')
+
 class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
         widget=forms.TextInput(
