@@ -38,43 +38,6 @@ def DefaultView(request):
 def AboutView(request, ignore):
     ##What do we do if they are logged in and go to the About page? (specifically with the sign in bar?)
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
-def PostView(request, postid):
-    if request.user.is_authenticated():
-        if request.method == 'POST': # Modify
-            form = NewPostForm(request.POST)
-            if form.is_valid():
-                pass #process stuff
-            else:
-                pass #bad error
-        else:
-            pass #return normal stuff
-            ##sanatize the postid if necessary here
-            pass
-            try:
-                post = Post.objects.all().get(pk=int(postid))#.prefetch_related('post', 'comment_set__commenter', 'tags')
-            except:
-                post = None
-            if post != None:
-                #posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
-                #for post in posts:
-                if post.user.pk == request.user.pk:
-                    post.candelete = True
-                    for comment in post.comment_set.all():
-                        comment.candelete = True
-                else:
-                    for comment in post.comment_set.all():
-                        if comment.commenter.pk == request.user.pk:
-                            comment.candelete = True
-                return render(request, 'mainsite/post.html', {'post':post})
-            else:
-                pass
-                message = "post not found " + postid #temp
-                return render(request, 'mainsite/message.html', {'message':message}) #temp
-                ##run some sort of search
-    else:
-        return redirect('/')
-    
-    return render(request, 'mainsite/myPosts.html')
 def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
             if request.method == 'POST': # Modify
@@ -147,10 +110,6 @@ def LoginView(request, ignore):
 def LogoutView(request, ignore):
     logout(request)
     return redirect('/')
-
-
-'''def RegistrationView(request, ignore):
-    return render_to_response('mainsite/registration.html')'''
 def RegistrationView(request, ignore):
     if request.method == 'POST': # If the form has been submitted...
         form = RegistrationForm(request.POST) # A form bound to the POST data
@@ -176,43 +135,6 @@ def RegistrationView(request, ignore):
         'loginform': LoginForm(),
         'form':form,
     })
-def PersonView(request, username): #testing
-    if request.user.is_authenticated():
-        if request.method == 'POST': # Modify
-            form = NewPostForm(request.POST)
-            if form.is_valid():
-                pass #process stuff
-            else:
-                pass #bad error
-        else:
-            pass #return normal stuff
-            ##sanatize the screenname if necessary here
-            pass
-            try:
-                user = UserData.objects.all().get(screenname=username)
-            except:
-                user = None
-            if user != None:
-                posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
-                for post in posts:
-                    if post.user.pk == request.user.pk:
-                        post.candelete = True
-                        for comment in post.comment_set.all():
-                            comment.candelete = True
-                    else:
-                        for comment in post.comment_set.all():
-                            if comment.commenter.pk == request.user.pk:
-                                comment.candelete = True
-                return render(request, 'mainsite/myPosts.html', {'posts':posts})
-            else:
-                pass
-                message = "username not found" #temp
-                return render(request, 'mainsite/message.html', {'message':message}) #temp
-                ##run some sort of search
-    else:
-        return redirect('/')
-    
-    return render(request, 'mainsite/myPosts.html')
 
 class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
