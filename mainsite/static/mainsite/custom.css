@@ -20,9 +20,12 @@
 
 .callout {
     position: relative;
-    margin: 18px 0;
-    padding: 18px 20px;
-    background-color: #00ff00;
+    margin: 10px 0;
+    padding: 5px 5px;
+    border-width:3px;
+    border-style:solid;
+    border-color:#22b5da;
+    background-color: #E7E7EF;
     /* easy rounded corners for modern browsers */
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -42,12 +45,12 @@
 
 .callout .sidenotch {
     position: absolute;
-    top: 10px;
+    top: 5px;
     left: -20px;
     margin: 0;
     border-top: 10px solid transparent;
     border-left: 10px solid transparent;
-    border-right: 10px solid #00ff00;
+    border-right: 10px solid #22b5da;
     border-bottom: 10px solid transparent;
     padding: 0;
     width: 0;
