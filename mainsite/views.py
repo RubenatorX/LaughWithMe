@@ -136,6 +136,45 @@ def RegistrationView(request, ignore):
         'form':form,
     })
 
+def PersonView(request, username): #testing
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            form = NewPostForm(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error
+        else:
+            pass #return normal stuff
+            ##sanatize the screenname if necessary here
+            pass
+            try:
+                user = UserData.objects.all().get(screenname=username)
+            except:
+                user = None
+            if user != None:
+                posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
+                for post in posts:
+                    if post.user.pk == request.user.pk:
+                        post.candelete = True
+                        for comment in post.comment_set.all():
+                            comment.candelete = True
+                    else:
+                        for comment in post.comment_set.all():
+                            if comment.commenter.pk == request.user.pk:
+                                comment.candelete = True
+                return render(request, 'mainsite/myPosts.html', {'posts':posts})
+            else:
+                pass
+                message = "username not found" #temp
+                return render(request, 'mainsite/message.html', {'message':message}) #temp
+                ##run some sort of search
+    else:
+        return redirect('/')
+    
+    return render(request, 'mainsite/myPosts.html')
+
+    
 class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
         widget=forms.TextInput(
