@@ -96,6 +96,13 @@ class Comment(models.Model):
         (COMMENT_LAUGHWITH, 'LaughWith'),
         (COMMENT_PITY, 'Pity'),
     )
+    
+    COMMENT_DICT = {
+        COMMENT_NONE: 'None',
+        COMMENT_LAUGHWITH: 'LaughWith',
+        COMMENT_PITY: 'Pity',
+    }
+    
     type = models.CharField(max_length=5,
                             choices=COMMENT_TYPE_CHOICES,
                             default=COMMENT_NONE)

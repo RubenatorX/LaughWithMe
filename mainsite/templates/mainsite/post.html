@@ -1,3 +1,32 @@
-{{ post.user.screenname }}: <a href="/post/{{ post.pk }}">{{ post.title }}</a> {% if post.candelete %}<a href="">Delete</a>{% endif %}<br>{{ post.text }}<br>
+{% extends 'mainsite/base-loggedin.html' %}
+{% load static %} 
+{% block title %}lolTrueStory{% endblock %}
+{% block body %}
+
+{{ post.user.screenname }}: 
+<a href="/post/{{ post.pk }}">{{ post.title }}</a> 
+{% if post.candelete %}<a href="">Delete</a>{% endif %}<br>
+{{ post.text }}<br>
 {% for tag in post.tags.all %}#{{ tag.tag }}, {% endfor %}<br>
-{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}:{{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},<br>{% endfor %}<br>
+
+<div class="container">
+<form action="" method="post">{% csrf_token %}
+    <div class="form-group">
+        Pity:
+        {{ form.pity }}
+        {% if form.pity.errors %}
+        <div class="errorcallout"><b>{{ form.pity.errors }}</b><b class="topnotch"/></div>
+      {% endif %}
+    </div>
+    LaughWith:
+    {{ form.laughWith }}
+    Comment:
+    {{ form.comment }}
+    
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+</div>
+
+{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}:{{ comment.typename }} - {{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},<br>{% endfor %}<br>
+   
+{% endblock %}

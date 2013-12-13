@@ -4,12 +4,11 @@
 {% block body %}
 
     <div class="container">
-          <br><br>
         <h1 align="center">New Post</h1>
       <!-- Example row of columns -->
       <div class="col-md-4">
       <h3>Select a template</h3>
-      <form action="">
+      <form action="" method="post">{% csrf_token %}
         <input type="radio" name="template" value="text">
             <div class="examplePost">
                 <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>         
@@ -28,31 +27,43 @@
                  <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
             </div>
         </input>
-        </form>
       </div>
       <div class = "col-md-5">
       <!--<h3>Create the Post</h3>-->
+            Title:
             <div class="form-group">
-              Title: <br>
-              <input type="text" placeholder="Title" class="form-control">
-            </div>
-            <form action="upload_file.php" method="post"
-                enctype="multipart/form-data">
-              Photo (optional):
-                <input type="file" name="file" id="file"><br>
-            </form>
-            <div class="form-group">
-              Post: <br>
-              <textarea name="post" placeholder="Write your story..." cols="40" rows="10" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-              Tags: <br>
-              <input type="text" placeholder="Add tags..." class="form-control">
+                {{ form.postTitle }}
+                {% if form.postTitle.errors %}
+                <div class="errorcallout"><b>{{ form.postTitle.errors }}</b><b class="topnotch"/></div>
+              {% endif %}
             </div>
             
-            <button type="register" class="btn btn-success">Publish</button>
-      </div>
-     
+            <div class="form-group">
+                {{ form.image }}
+                {% if form.image.errors %}
+                <div class="errorcallout"><b>{{ form.image.errors }}</b><b class="topnotch"/></div>
+              {% endif %}
+            </div>
+            
+            Post:
+            <div class="form-group">
+               {{ form.post }}
+                {% if form.post.errors %}
+                <div class="errorcallout"><b>{{ form.post.errors }}</b><b class="topnotch"/></div>
+              {% endif %}
+            </div>
+            Tags:
+            <div class="form-group">
+                {{ form.tags }}
+                {% if form.tags.errors %}
+                <div class="errorcallout"><b>{{ form.tags.errors }}</b><b class="topnotch"/></div>
+              {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-success">Publish</button>
+            
+    </div>
+    </form>
       <div class="col-md-3"></div>
     </div>     
     

@@ -41,11 +41,12 @@ def AboutView(request, ignore):
 def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
             if request.method == 'POST': # Modify
-                form = NewPostForm(request.POST)
+                '''form = Form(request.POST)
                 if form.is_valid():
                     pass #process stuff
                 else:
-                    pass #bad error
+                    pass #bad error'''
+                pass
             pass #return normal stuff
             posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
 
@@ -65,16 +66,19 @@ def MyPostsView(request, ignore): ## incomplete
 def NewPostView(request, ignore):
     if request.user.is_authenticated():
         if request.method == 'POST': # If the form has been submitted...
-            #form = NewPostForm(request.POST)
-            if True:#'''form.is_valid():'''
-                pass
-                #process stuff
+            form = NewPostForm(request.POST)
+            if form.is_valid():
+                post = Post(user=request.user.userdata, title=form.cleaned_data["postTitle"],text=form.cleaned_data["post"],
+                )
+                
+                post.save()
+                return redirect('/post/' + str(post.pk))
             else:
                 #return form with errors
-                return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata})#''',{'form':form}''')
+                return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':form})
         else:
             #return empty form
-            return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata})#''',{'form':NewPostForm()}''')
+            return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':NewPostForm()})
     else:
         return redirect('/')
 def LoginView(request, ignore):
@@ -139,11 +143,12 @@ def RegistrationView(request, ignore):
 def PersonView(request, username): #testing
     if request.user.is_authenticated():
         if request.method == 'POST': # Modify
-            form = NewPostForm(request.POST)
+            '''form = Form(request.POST)
             if form.is_valid():
                 pass #process stuff
             else:
-                pass #bad error
+                pass #bad error'''
+            pass
         else:
             pass #return normal stuff
             ##sanatize the screenname if necessary here
@@ -176,37 +181,62 @@ def PersonView(request, username): #testing
 
 def PostView(request, postid):
     if request.user.is_authenticated():
-        if request.method == 'POST': # Modify
-            form = NewPostForm(request.POST)
-            if form.is_valid():
-                pass #process stuff
+        form = CommentForm(request.POST)
+        
+        try:
+            post = Post.objects.all().get(pk=int(postid))#.prefetch_related('post', 'comment_set__commenter', 'tags')
+        except:
+            post = None
+        if post != None:
+            #posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
+            #for post in posts:
+            if post.user.pk == request.user.pk:
+                post.candelete = True
+                for comment in post.comment_set.all():
+                    comment.candelete = True
             else:
-                pass #bad error
+                for comment in post.comment_set.all():
+                    if comment.commenter.pk == request.user.pk:
+                        comment.candelete = True
+        else:
+            pass
+            message = "post not found " + postid #temp
+            return render(request, 'mainsite/message.html', {'message':message}) #temp
+                ##run some sort of search
+        
+        if request.method == 'POST': # Modify
+            if form.is_valid():
+                #process stuff
+                if form.cleaned_data['pity']:
+                    type = 'Pity'
+                elif form.cleaned_data['laughWith']:
+                    type = 'LaughWith'
+                else:
+                    type = 'None'
+                        
+                
+                comment = Comment(post = post,
+                    commenter = request.user.userdata,
+                    text = form.cleaned_data['comment'],
+                    type = type,
+                )
+                
+                comment.save()
+                    
+            else:
+                pass #bad error'''
+            pass
         else:
             pass #return normal stuff
             ##sanatize the postid if necessary here
             pass
-            try:
-                post = Post.objects.all().get(pk=int(postid))#.prefetch_related('post', 'comment_set__commenter', 'tags')
-            except:
-                post = None
-            if post != None:
-                #posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
-                #for post in posts:
-                if post.user.pk == request.user.pk:
-                    post.candelete = True
-                    for comment in post.comment_set.all():
-                        comment.candelete = True
-                else:
-                    for comment in post.comment_set.all():
-                        if comment.commenter.pk == request.user.pk:
-                            comment.candelete = True
-                return render(request, 'mainsite/post.html', {'post':post})
-            else:
-                pass
-                message = "post not found " + postid #temp
-                return render(request, 'mainsite/message.html', {'message':message}) #temp
-                ##run some sort of search
+            form = CommentForm()
+
+        for comment in post.comment_set.all():
+            comment.typename = Comment.COMMENT_DICT[comment.type]
+            if comment.typename == 'None':
+                comment.typename = None
+        return render(request, 'mainsite/post.html', {'post':post, 'form':form, 'userdata':request.user.userdata})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
@@ -296,7 +326,84 @@ class RegistrationForm(forms.Form):
         else:
             self._errors["email"]= "An email is required."
         return form_data['email']
-        
+
+class NewPostForm(forms.Form):
+    postTitle = forms.CharField(max_length=50, min_length=1,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Title',
+                'class':'form-control',
+                'id':'title',
+            }
+        )
+    )
+    
+    image = forms.ImageField(required=False,
+        widget=forms.ClearableFileInput(
+            attrs={
+                'class':'form-control',
+                'id':'image',
+            }
+        )
+    )
+    
+    post = forms.CharField(required=False, max_length=2000,
+        widget=forms.Textarea(
+            attrs={
+                'placeholder':'Write your story...',
+                'class':'form-control',
+                'id':'post',
+            }
+        )
+    )
+    tags = forms.CharField(required=False, max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Add tags...',
+                'class':'form-control',
+                'id':'tags',
+            }
+        )
+    )
+    
+class CommentForm(forms.Form):
+    pity = forms.BooleanField(initial=False, required=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                'class':'form-control',
+                'id':'pity',
+            }
+        )
+    )
+    
+    laughWith = forms.BooleanField(initial=False, required=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                'class':'form-control',
+                'id':'laughWith',
+            }
+        )
+    )
+    
+    comment = forms.CharField(required=False, max_length=500,
+        widget=forms.Textarea(
+            attrs={
+                'placeholder':'Make a comment...',
+                'class':'form-control',
+                'id':'comment',
+            }
+        )
+    )
+    tags = forms.CharField(required=False, max_length=50,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':'Add tags...',
+                'class':'form-control',
+                'id':'tags',
+            }
+        )
+    )
+             
     
 '''#File Upload example
 def upload_file(request):
