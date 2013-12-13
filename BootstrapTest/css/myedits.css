@@ -12,6 +12,12 @@
 
 .examplePost{background-color:#CCCCDD}
 
+.fixedPosition{
+position:fixed;
+top:20px;
+right:5px;
+}
+
 .callout {
     position: relative;
     margin: 18px 0;
@@ -24,7 +30,7 @@
 }
 .callout .sidenotch {
     position: absolute;
-    top: 10pxpx;
+    top: 7px;
     left: -20px;
     margin: 0;
     border-top: 10px solid transparent;

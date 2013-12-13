@@ -160,6 +160,7 @@ class RegistrationForm(forms.Form):
             attrs={
                 'placeholder':'Email',
                 'class':'form-control',
+                'id':'emailField',
             }
         )
     )
@@ -168,6 +169,7 @@ class RegistrationForm(forms.Form):
             attrs={
                 'placeholder':'Screen Name',
                 'class':'form-control',
+                'id':'snField',
             }
         )
     )
@@ -177,6 +179,7 @@ class RegistrationForm(forms.Form):
             attrs={
                 'placeholder':'password',
                 'class':'form-control',
+                'id':'passField',
             }
         )
     )

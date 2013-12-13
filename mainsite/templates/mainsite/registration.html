@@ -5,7 +5,7 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="col-md-2"></div>
-      <div class = "col-md-5">
+      <div class = "col-md-8">
         <br>
         <h1>Registration</h1>
         <p>Ready to share your stories?<br>Fill in the information below to create an account! </p>
@@ -13,38 +13,69 @@
         {% if form.non_field_errors %}
 	      <div class="errorcallout">{{ form.non_field_errors }}</div>
         {% endif %}
-        
-            <div class="form-group">
-              Email: <br>
-              <!--<input type="text" placeholder="Email" class="form-control">-->
-	      {{ form.email }}
-          {% if form.email.errors %}
-            <div class="errorcallout"><b>{{ form.email.errors }}</b><b class="topnotch"/></div>
-          {% endif %}
-            </div>
-            
-            <div class="form-group">
-              Screen Name: <br>
-              <!--<input type="text" placeholder="Screen Name" class="form-control">-->
-	      {{ form.screenname }}
-          {% if form.screenname.errors %}
-	      <div class="errorcallout">{{ form.screenname.errors }}<b class="topnotch"/></div>
-          {% endif %}
-            </div>
-            
-            <div class="form-group">
-              Password: <br>
-              <!--<input type="password" placeholder="password" class="form-control">-->
-	      {{ form.password }}
-            </div>
-            <div class="form-group">
-              <!--<input type="password" placeholder="confirm password" class="form-control">-->
-	      {{ form.passwordconfirm }}
-          {% if form.password.errors %}
-	      <div class="errorcallout">{{ form.password.errors }}<b class="topnotch"/></div>
-          {% endif %}
 
+        Email:
+        <div class="row">
+            <div class="col-md-6 col-md-push-6">
+                <div class="callout" id="emailCallout">
+                    Enter a valid email address
+                    <b class="sidenotch"></b>
+                </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-6 col-md-pull-6">
+                  <!--<input type="text" placeholder="Email" class="form-control">-->
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="errorcallout"><b>{{ form.email.errors }}</b><b class="topnotch"/></div>
+              {% endif %}
+                </div>
+            </div>
+        </div>
+           
+        Screen Name:
+        <div class="row">
+            <div class="col-md-6 col-md-push-6">
+                <div class="callout" id="snCallout">
+                    Enter a valid screen name. This is how other users will see you.
+                    <b class="sidenotch"></b>
+                </div>
+            </div>
+             <div class="col-md-6 col-md-pull-6">
+                <div class="form-group">
+                  <!--<input type="text" placeholder="Screen Name" class="form-control">-->
+              {{ form.screenname }}
+              {% if form.screenname.errors %}
+              <div class="errorcallout">{{ form.screenname.errors }}<b class="topnotch"/></div>
+              {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        Password:
+        <div class="row">
+            <div class="col-md-6 col-md-push-6">
+                <div class="callout" id="passwordCallout">
+                    Enter a password and confirm it
+                    <b class="sidenotch"></b>
+                </div>
+            </div>
+            <div class="col-md-6 col-md-pull-6">
+                <div class="form-group">
+                  <!--<input type="password" placeholder="password" class="form-control">-->
+              {{ form.password }}
+                </div>
+                <div class="form-group">
+                  <!--<input type="password" placeholder="confirm password" class="form-control">-->
+              {{ form.passwordconfirm }}
+              {% if form.password.errors %}
+              <div class="errorcallout">{{ form.password.errors }}<b class="topnotch"/></div>
+              {% endif %}
+
+                </div>
+            </div>
+         </div>
+                
 	    <div class="form-group">
 	      Prove that you are not a Robot: <br>
               <!--<input type="password" placeholder="confirm password" class="form-control">-->
@@ -58,9 +89,43 @@
 
 	</form>
       </div>
-      <div class="col-md-3"></div>
+      <!--<div class="col-md-5">
+        <div class="callout" id="emailCallout">
+            Enter a valid email address
+            <b class="sidenotch"></b>
+        </div>
+     
+        <div class="callout" id="passwordCallout">
+            Please enter a password, and confirm it
+            <b class="sidenotch"></b>
+        </div>
+      
+        <div class="callout" id="snCallout">
+            Enter a screen name (this is how you will be identified to others on the site)
+            <b class="sidenotch"></b>
+        </div>
+      
+      </div>-->
       <div class="col-md-2"></div>
-    </div>     
+    </div>      
+    
+    <script type="text/javascript">
+       
+        function setLocations() {
+            var position = $("#emailField").offset();
+            $("#emailCallout").offset({top: position.top-5});
+            position = $("#passField").offset();
+            $("#passwordCallout").offset({top: position.top});
+            position = $("#snField").offset();
+            $("#snCallout").offset({top: position.top});
+        }
+        function test() {
+        alert('ok');
+        }
+        
+        window.onload = setLocations;
+
+</script>
     
     {% endblock %}   
       
