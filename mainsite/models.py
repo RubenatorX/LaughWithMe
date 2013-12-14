@@ -75,7 +75,9 @@ class Post(models.Model):
     title = models.CharField(max_length=50, validators=[MinLengthValidator(1)])
     text = models.TextField(validators=[MaxLengthValidator(2000)])
     def imagepath(self, originalFilename):
-        pass
+        ext = filename.split('.')[-1]
+        filename = '{}.{}'.format(uuid4().hex, ext)
+        return filename
     image = models.ImageField(upload_to=imagepath)
     tags = models.ManyToManyField(Tag)
     date = models.DateTimeField(auto_now_add=True)

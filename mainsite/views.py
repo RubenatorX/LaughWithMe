@@ -66,11 +66,10 @@ def MyPostsView(request, ignore): ## incomplete
 def NewPostView(request, ignore):
     if request.user.is_authenticated():
         if request.method == 'POST': # If the form has been submitted...
-            form = NewPostForm(request.POST)
+            form = NewPostForm(request.POST, request.FILES)
             if form.is_valid():
-                post = Post(user=request.user.userdata, title=form.cleaned_data["postTitle"],text=form.cleaned_data["post"],
+                post = Post(user=request.user.userdata, image=form.cleaned_data['image'], title=form.cleaned_data["postTitle"],text=form.cleaned_data["post"],
                 )
-                
                 post.save()
                 return redirect('/post/' + str(post.pk))
             else:
