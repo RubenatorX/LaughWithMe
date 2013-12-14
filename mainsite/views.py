@@ -8,6 +8,7 @@ from django.forms.util import ErrorList
 from models import *
 from django.contrib.auth import logout
 from captcha.fields import ReCaptchaField
+import re
 
 # Create your views here.
 
@@ -355,6 +356,14 @@ class RegistrationForm(forms.Form):
             name = self.cleaned_data['screenname']
             if len(UserData.objects.filter(screenname__iexact=name)) > 0:
                 self._errors['screenname']= 'This Screenname is already taken, try another.'
+                return form_data['screenname']
+            if not re.match(r'^[a-zA-Z0-9]', self.cleaned_data['screenname']):
+                self._errors['screenname']= "Screen Name must start with a letter or number"
+                return form_data['screenname']
+            if not re.match(r'^[a-zA-Z0-9][a-zA-Z0-9-_]*$', self.cleaned_data['screenname']):
+                self._errors['screenname']= "Screen Name must only contain letters, numbers, hyphens, and underscores."
+                return form_data['screenname']
+            #profanity filter goes here
         else:
             self._errors["screenname"]= "A Screen Name is required"
         return form_data['screenname']

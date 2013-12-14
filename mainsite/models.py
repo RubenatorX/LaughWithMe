@@ -27,7 +27,13 @@ class CaseInsensitiveManager(Manager, fieldnames):
 # Create your models here.
 class UserData(models.Model):
     user = models.OneToOneField(User, primary_key=True)
-    screenname = models.CharField(max_length=25, unique=True)
+    screenname = models.CharField(max_length=25, unique=True, validators=[
+            RegexValidator(
+                r'^[a-zA-Z0-9-_]*',
+                "Screen name must contain only letters, numbers, hyphens and underscores.",
+                'Invalid Screen Name'
+            )]
+    )
     favorites = models.ManyToManyField('self', through='Favorite', 
                                            symmetrical=False, 
                                            related_name='userFavorites')

@@ -132,7 +132,8 @@ AXES_USE_USER_AGENT=False
 #set to a python timedelta object or an integer. If an
 #integer, will be interpreted as a number of hours.
 #Default: None
-AXES_COOLOFF_TIME=1
+import datetime
+AXES_COOLOFF_TIME=datetime.timedelta(minutes=20)#1
 
 # If set, specifies a logging mechanism for axes to use.
 #Default: 'axes.watch_login'
