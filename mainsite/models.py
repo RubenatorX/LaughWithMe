@@ -88,24 +88,26 @@ class Comment(models.Model):
     text = models.TextField(validators=[MaxLengthValidator(500)])
     date = models.DateTimeField(auto_now_add=True)
 
-    COMMENT_NONE = 'none',
-    COMMENT_LAUGHWITH = 'Lw/',
-    COMMENT_PITY = 'pity',
+    COMMENT_NONE = 0,
+    COMMENT_LAUGHWITH = 1,
+    COMMENT_PITY = 2,
     COMMENT_TYPE_CHOICES = (
         (COMMENT_NONE, 'None'),
         (COMMENT_LAUGHWITH, 'LaughWith'),
-        (COMMENT_PITY, 'Pity'),
+        (COMMENT_PITY, 'Pity')
     )
+    type = models.IntegerField(default=0)
     
-    COMMENT_DICT = {
-        COMMENT_NONE: 'None',
-        COMMENT_LAUGHWITH: 'LaughWith',
-        COMMENT_PITY: 'Pity',
-    }
-    
-    type = models.CharField(max_length=5,
-                            choices=COMMENT_TYPE_CHOICES,
-                            default=COMMENT_NONE)
+    @property
+    def typename(self):
+        if self.type == 1:
+            typename = 'LaughWith'
+        elif self.type == 2:
+            typename = 'Pity'
+        else :
+            typename = None
+        return typename
+        
 class Notification(models.Model):
     user = models.ForeignKey(UserData)
     activity = models.ForeignKey(Comment)

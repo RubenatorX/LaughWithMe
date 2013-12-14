@@ -12,21 +12,36 @@
 <div class="container">
 <form action="" method="post">{% csrf_token %}
     <div class="form-group">
-        Pity:
-        {{ form.pity }}
-        {% if form.pity.errors %}
+    <div class="col-md-6">
+    Pity:
+    {{ form.pity }}
+    {% if form.pity.errors %}
         <div class="errorcallout"><b>{{ form.pity.errors }}</b><b class="topnotch"/></div>
       {% endif %}
     </div>
     LaughWith:
     {{ form.laughWith }}
+    {% if form.laughWith.errors %}
+        <div class="errorcallout"><b>{{ form.laughWith.errors }}</b><b class="topnotch"/></div>
+    {% endif %}
     Comment:
     {{ form.comment }}
-    
+    {% if form.comment.errors %}
+        <div class="errorcallout"><b>{{ form.comment.errors }}</b><b class="topnotch"/></div>
+    {% endif %}
+    </div>
     <button type="submit" class="btn btn-success">Save</button>
+</form>
+<form action="" method="post">{% csrf_token %}
+<input type="hidden" name="commentID" value="2">
+    <button type="delete_comment" class="btn btn-success">Delete</button>
 </form>
 </div>
 
-{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}:{{ comment.typename }} - {{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},<br>{% endfor %}<br>
+{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}
+{% if comment.typename %}
+-{{ comment.typename }}
+{% endif %}
+:&nbsp;{{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},<br>{% endfor %}<br>
    
 {% endblock %}

@@ -181,6 +181,11 @@ def PersonView(request, username): #testing
 
 def PostView(request, postid):
     if request.user.is_authenticated():
+    
+    
+        if "commentID" in request.POST:
+            return render(request, "mainsite/message.html", {'message':"Comment %s deleted" % request.POST['commentID']})
+   
         form = CommentForm(request.POST)
         
         try:
@@ -205,24 +210,25 @@ def PostView(request, postid):
                 ##run some sort of search
         
         if request.method == 'POST': # Modify
+            
             if form.is_valid():
                 #process stuff
                 if form.cleaned_data['pity']:
-                    type = 'Pity'
+                    type = 2
                 elif form.cleaned_data['laughWith']:
-                    type = 'LaughWith'
+                    type = 1
                 else:
-                    type = 'None'
+                    type = 0
                         
                 
                 comment = Comment(post = post,
                     commenter = request.user.userdata,
                     text = form.cleaned_data['comment'],
-                    type = type,
+                    type = type
                 )
                 
                 comment.save()
-                    
+                form = CommentForm()
             else:
                 pass #bad error'''
             pass
@@ -232,10 +238,15 @@ def PostView(request, postid):
             pass
             form = CommentForm()
 
-        for comment in post.comment_set.all():
-            comment.typename = Comment.COMMENT_DICT[comment.type]
-            if comment.typename == 'None':
-                comment.typename = None
+        '''for comment in post.comment_set.all():
+            if comment.type == 1:
+                comment.typename = 'LaughWith'
+            elif comment.type == 2:
+                comment.typename = 'Pity'
+            else :
+                comment.typename = 'NOTHING'
+        '''
+                
         return render(request, 'mainsite/post.html', {'post':post, 'form':form, 'userdata':request.user.userdata})
     else:
         return redirect('/')
