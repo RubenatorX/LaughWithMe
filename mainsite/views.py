@@ -67,8 +67,13 @@ def NewPostView(request, ignore):
     if request.user.is_authenticated():
         if request.method == 'POST': # If the form has been submitted...
             form = NewPostForm(request.POST, request.FILES)
+            print form.data
             if form.is_valid():
-                post = Post(user=request.user.userdata, image=form.cleaned_data['image'], title=form.cleaned_data["postTitle"],text=form.cleaned_data["post"],
+                print "image is %s" % form.cleaned_data['image']
+                post = Post(user=request.user.userdata,
+                            image=form.cleaned_data['image'],
+                            title=form.cleaned_data["postTitle"],
+                            text=form.cleaned_data["post"]
                 )
                 post.save()
                 return redirect('/post/' + str(post.pk))
@@ -194,6 +199,8 @@ def PostView(request, postid):
             post = posts[0]
             if post.user.pk == request.user.pk:
                 #go for it
+                if post.image:
+                    post.image.delete()
                 post.delete()
             else:
                 #you aren't the user, no permission

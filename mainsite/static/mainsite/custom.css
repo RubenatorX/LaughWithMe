@@ -140,3 +140,13 @@ footer {
 }
 
 
+#imagecontainer-large {
+   width: 530px;
+   height: 300px;
+}
+
+#imagecontainer-large img {
+   width: 100%;
+   display:block;
+   margin:auto;
+}

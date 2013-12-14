@@ -7,6 +7,7 @@ from django.core.validators import validate_email
 from django.core.validators import MinLengthValidator
 from django.core.validators import MaxLengthValidator
 from django.core.validators import RegexValidator
+import uuid
 
 
 '''
@@ -75,8 +76,9 @@ class Post(models.Model):
     title = models.CharField(max_length=50, validators=[MinLengthValidator(1)])
     text = models.TextField(validators=[MaxLengthValidator(2000)])
     def imagepath(self, originalFilename):
-        ext = filename.split('.')[-1]
-        filename = '{}.{}'.format(uuid4().hex, ext)
+        ext = originalFilename.split('.')[-1]
+        filename = '{}.{}'.format(uuid.uuid4().hex, ext)
+        print "image %s detected. Saving to %s" % (originalFilename, filename)
         return filename
     image = models.ImageField(upload_to=imagepath)
     tags = models.ManyToManyField(Tag)
