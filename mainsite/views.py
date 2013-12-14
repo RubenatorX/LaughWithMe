@@ -180,37 +180,47 @@ def PersonView(request, username): #testing
     return render(request, 'mainsite/myPosts.html')
 
 def PostView(request, postid):
-    if request.user.is_authenticated():
-    
-    
-        if "commentID" in request.POST:
-            return render(request, "mainsite/message.html", {'message':"Comment %s deleted" % request.POST['commentID']})
-   
+    if request.user.is_authenticated():        
+        posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+        
         form = CommentForm(request.POST)
         
-        try:
-            post = Post.objects.all().get(pk=int(postid))#.prefetch_related('post', 'comment_set__commenter', 'tags')
-        except:
-            post = None
-        if post != None:
-            #posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
-            #for post in posts:
-            if post.user.pk == request.user.pk:
-                post.candelete = True
-                for comment in post.comment_set.all():
-                    comment.candelete = True
-            else:
-                for comment in post.comment_set.all():
-                    if comment.commenter.pk == request.user.pk:
-                        comment.candelete = True
-        else:
+        if len(posts) == 0:
             pass
             message = "post not found " + postid #temp
             return render(request, 'mainsite/message.html', {'message':message}) #temp
-                ##run some sort of search
+                ##run some sort of search        
         
-        if request.method == 'POST': # Modify
-            
+        if "postID" in request.POST:
+            post = posts[0]
+            if post.user.pk == request.user.pk:
+                #go for it
+                post.delete()
+            else:
+                #you aren't the user, no permission
+                pass
+            return redirect("/myposts")
+        
+        elif "commentID" in request.POST:
+            comment = None
+            try:
+                comment = Comment.objects.get(pk = int(request.POST['commentID'])) 
+            except:
+                pass #no comment was found
+            if posts[0].user.pk == request.user.pk:
+                #go for it
+                comment.delete()
+            else:
+                if comment.commenter.pk == request.user.pk:
+                    #go for it
+                    comment.delete()
+                else:
+                    # bad permission
+                    pass
+            posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+                    
+        
+        elif request.method == 'POST': # Modify
             if form.is_valid():
                 #process stuff
                 if form.cleaned_data['pity']:
@@ -221,7 +231,7 @@ def PostView(request, postid):
                     type = 0
                         
                 
-                comment = Comment(post = post,
+                comment = Comment(post = posts[0],
                     commenter = request.user.userdata,
                     text = form.cleaned_data['comment'],
                     type = type
@@ -229,6 +239,9 @@ def PostView(request, postid):
                 
                 comment.save()
                 form = CommentForm()
+                
+                posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+                 
             else:
                 pass #bad error'''
             pass
@@ -246,8 +259,19 @@ def PostView(request, postid):
             else :
                 comment.typename = 'NOTHING'
         '''
+
+        for post in posts:
+            if post.user.pk == request.user.pk:
+                post.candelete = True
+                for comment in post.comment_set.all():
+                    comment.candelete = True
+            else:
+                for comment in post.comment_set.all():
+                    if comment.commenter.pk == request.user.pk:
+                        comment.candelete = True
+       
                 
-        return render(request, 'mainsite/post.html', {'post':post, 'form':form, 'userdata':request.user.userdata})
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')

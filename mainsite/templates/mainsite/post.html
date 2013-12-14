@@ -5,7 +5,11 @@
 
 {{ post.user.screenname }}: 
 <a href="/post/{{ post.pk }}">{{ post.title }}</a> 
-{% if post.candelete %}<a href="">Delete</a>{% endif %}<br>
+{% if post.candelete %}
+<form action="" method="post">{% csrf_token %}
+    <input type="hidden" name="postID" value="{{ post.pk }}">
+    <button type="delete_post" class="btn btn-success">Delete</button>
+</form>{% endif %}<br>
 {{ post.text }}<br>
 {% for tag in post.tags.all %}#{{ tag.tag }}, {% endfor %}<br>
 
@@ -32,16 +36,19 @@
     </div>
     <button type="submit" class="btn btn-success">Save</button>
 </form>
-<form action="" method="post">{% csrf_token %}
-<input type="hidden" name="commentID" value="2">
-    <button type="delete_comment" class="btn btn-success">Delete</button>
-</form>
 </div>
 
 {% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}
 {% if comment.typename %}
 -{{ comment.typename }}
 {% endif %}
-:&nbsp;{{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},<br>{% endfor %}<br>
+:&nbsp;{{ comment.text }}
+{% if comment.candelete %}
+     <form action="" method="post">{% csrf_token %}
+        <input type="hidden" name="commentID" value="{{ comment.pk }}">
+            <button type="delete_comment" class="btn btn-success">Delete</button>
+     </form>
+{% endif %}<br>
+{% endfor %}<br>
    
 {% endblock %}
