@@ -407,6 +407,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )
@@ -416,6 +417,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )
