@@ -217,7 +217,7 @@ def PostView(request, postid):
                 else:
                     # bad permission
                     pass
-            posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+            return redirect('/post/' + str(posts[0].pk))
                     
         
         elif request.method == 'POST': # Modify
@@ -240,7 +240,7 @@ def PostView(request, postid):
                 comment.save()
                 form = CommentForm()
                 
-                posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+                return redirect('/post/' + str(posts[0].pk))
                  
             else:
                 pass #bad error'''

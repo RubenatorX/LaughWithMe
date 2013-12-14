@@ -10,7 +10,13 @@
 
 .navbar-brand{float:left;padding:15px 25px;font-size:18px;line-height:20px}
 
+.navbar-brand-image{float:left;padding:10px 25px;font-size:18px;line-height:20px}
+
 .navbar{max-height:50px;}
+
+.navbar-brand-icon{float:left;padding:5px 2px;line-height:20px}
+
+a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
 
 .examplePost{background-color:#CCCCDD}
 
@@ -122,4 +128,3 @@ footer {
 }
 
 
-a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
