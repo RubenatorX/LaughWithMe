@@ -184,6 +184,25 @@ def PersonView(request, username): #testing
     
     return render(request, 'mainsite/myPosts.html')
 
+def SettingsView(request, ignore): #testing
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            '''form = Form(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error'''
+            pass
+        else:
+            pass #return normal stuff
+            userdata = UserData.objects.all().filter(user=request.user).prefetch_related('userdata')
+            user = request.user
+            return render(request, 'mainsite/myPosts.html', {'posts':posts})
+    else:
+        return redirect('/')
+    
+    return render(request, 'mainsite/myPosts.html')
+
 def PostView(request, postid):
     if request.user.is_authenticated():        
         posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
@@ -347,8 +366,13 @@ class RegistrationForm(forms.Form):
             if form_data['password'] != form_data['passwordconfirm']:
                 self._errors["password"]= "Passwords do not match"
                 del form_data['password']
+                return form_data
         else :
             self._errors["password"]= "These fields are required"
+            return form_data
+        if not re.match(r'^(?=.*[a-zA-Z])(?=.*\d).+$', self.cleaned_data['password']):
+            self._errors['password']= 'Password must contain letters and a numbers.'
+            return form_data
         return form_data
     def clean_screenname(self):
         form_data = self.cleaned_data

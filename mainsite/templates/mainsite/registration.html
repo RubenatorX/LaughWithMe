@@ -16,17 +16,16 @@
         Email:
         <div class="row">
             <div class="col-md-6 col-md-push-6">
-                <div class="callout" id="emailCallout">
+                <!--<div class="callout" id="emailCallout">
                     Enter a valid email address
                     <b class="sidenotch"></b>
-                </div>
+                </div>-->
             </div>
             <div class="form-group">
                 <div class="col-md-6 col-md-pull-6">
-                  <!--<input type="text" placeholder="Email" class="form-control">-->
               {{ form.email }}
               {% if form.email.errors %}
-                <div class="errorcallout"><b>{{ form.email.errors }}</b><b class="topnotch"/></div>
+                <div class="errorcallout"><b>{{ form.email.errors }}</b><b class="topnotch"/></b></div>
               {% endif %}
                 </div>
             </div>
@@ -36,7 +35,7 @@
         <div class="row">
             <div class="col-md-6 col-md-push-6">
                 <div class="callout" id="snCallout">
-                    Enter a valid screen name. This is how other users will see you.
+                    This is how other users will see you. Screen Names must contain only letters, numbers, hyphens, and underscores.
                     <b class="sidenotch"></b>
                 </div>
             </div>
@@ -45,7 +44,7 @@
                   <!--<input type="text" placeholder="Screen Name" class="form-control">-->
               {{ form.screenname }}
               {% if form.screenname.errors %}
-              <div class="errorcallout">{{ form.screenname.errors }}<b class="topnotch"/></div>
+              <div class="errorcallout"><b>{{ form.screenname.errors }}</b><b class="topnotch"/></b></div>
               {% endif %}
                 </div>
             </div>
@@ -55,7 +54,7 @@
         <div class="row">
             <div class="col-md-6 col-md-push-6">
                 <div class="callout" id="passwordCallout">
-                    Enter a password and confirm it
+                    Passwords must contain both a letter and a number.
                     <b class="sidenotch"></b>
                 </div>
             </div>
@@ -68,7 +67,7 @@
                   <!--<input type="password" placeholder="confirm password" class="form-control">-->
               {{ form.passwordconfirm }}
               {% if form.password.errors %}
-              <div class="errorcallout">{{ form.password.errors }}<b class="topnotch"/></div>
+              <div class="errorcallout"><b>{{ form.password.errors }}</b><b class="topnotch"/></b></div>
               {% endif %}
 
                 </div>
@@ -80,7 +79,7 @@
               <!--<input type="password" placeholder="confirm password" class="form-control">-->
 	      {{ form.captcha }}
         	 {% if form.captcha.errors %}
-	     		 <div class="errorcallout">{{ form.captcha.errors }}<b class="topnotch"/></div>
+	     		 <div class="errorcallout"><b>{{ form.captcha.errors }}</b><b class="topnotch"/></b></div>
          	 {% endif %}
 
             </div>
