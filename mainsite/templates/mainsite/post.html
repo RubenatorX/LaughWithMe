@@ -43,6 +43,15 @@
     </div>
 </div>
 </div>
+
+<div class="container">
+<div class="col-md-3"></div> 
+<div class="col-md-6">
+<h3>...</h3>
+</div>
+<div class="col-md-3"></div>
+</div> 
+
 <div class="row">
 <div class="container">
 <form action="" method="post">{% csrf_token %}
@@ -62,7 +71,7 @@
                 <div class="errorcallout"><b>{{ form.pity.errors }}</b><b class="topnotch"/></div>
               {% endif %}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         <div class="row">
             <div class="col-md-6">    
                 <label class="checkbox" for="laughWith">LaughWith:</label>
@@ -75,11 +84,20 @@
                 <div class="errorcallout"><b>{{ form.laughWith.errors }}</b><b class="topnotch"/></div>
             {% endif %}
         </div>
-        <div class="col-md-5"></div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4">
+        <div class="row">
+        <div class="col-md-6">
+            <label class="checkbox">Comment:</label>
+        </div>
+        <div class="col-md-6">    
+            <input class="form-control" id="commentCheckbox" type="checkbox" name="commentEnable" value="commentOn" onclick="toggleComment()">
+         </div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-    Comment:
+    <div class="row"> 
+    <label id="commentLabel" style="display:none;">Comment:</label>
     {{ form.comment }}
     {% if form.comment.errors %}
         <div class="errorcallout"><b>{{ form.comment.errors }}</b><b class="topnotch"/></div>
@@ -92,44 +110,76 @@
 </form>
 </div>
 
-<div class="row">
-{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}
-{% if comment.typename %}
--:&nbsp;{{ comment.typename }}
-{% endif %}
-:&nbsp;{{ comment.text }}
-{% if comment.candelete %}
-     <form action="" method="post">{% csrf_token %}
-        <input type="hidden" name="commentID" value="{{ comment.pk }}">
-            <button type="delete_comment" class="btn btn-success" onclick="confirmDelete(event)">Delete</button>
-     </form>
-{% endif %}<br>
-{% endfor %}<br>
+<div class="smallBR"/>
+<div class="container">
+<div class="col-md-3"></div> 
+<div class="col-md-6 blueBorder">
+<font class="blueBorderHeader">Comments:</font>
+{% if hasComments %}
+    {% for comment in post.comment_set.all %}    
+<div class="commentShell">
+    <font class="username">{{ comment.commenter.screenname }}</font>
+    
+    <font class="commentTypename">{% if comment.typename %}
+        -&nbsp;{{ comment.typename }}
+    {% endif %}</font>
+    {% if comment.candelete %}
+         <form action="" method="post" id="deleteComment">{% csrf_token %}
+            <input type="hidden" name="commentID" value="{{ comment.pk }}">
+               <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeleteComment()"></i>
+         </form>
+    {% endif %}
+    <div class="comment wordwrap">
+    
+    {{ comment.text }}
 
-</div>   
+    </div>
+</div>
+    {% endfor %}
+
+{% else %}
+    <br>
+    No Comments
+{% endif %}
+
+
+</div>
+<div class="col-md-3"></div>
+</div> 
    
    
  <script type="text/javascript">
 
         function confirmDelete(e) {
             if(!confirm('Are you sure?'))e.preventDefault();
-            /*if (confirm('Are you sure you want to delete this?')) {
-                // Save it!
-            } else {
-                // Do nothing!
-                return false;
-            }*/
+        }
+        
+        function confirmDeleteComment() {
+            if(confirm('Are you sure?'))
+                $("#deleteComment").submit();                
         }
 
-        function checkCheckBoxes(e) {
+        function checkPityBox() {
             if($("#pity").prop('checked')) {
                 $('#laughWith').prop('checked', false);
             }
+        }
+        
+        function checkLaughWithBox() {
             if($("#laughWith").prop('checked')) {
                 $('#pity').prop('checked', false);
             }  
         }
 
-        
+        function toggleComment() {
+            if ($("#commentCheckbox").prop('checked')) {
+                $('#commentArea').show();
+                $('#commentLabel').show();
+            }
+            else {
+                $('#commentArea').hide();
+                $('#commentLabel').hide();
+            }
+       }
 </script>  
 {% endblock %}

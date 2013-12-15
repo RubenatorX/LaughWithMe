@@ -277,8 +277,8 @@ def PostView(request, postid):
                     if comment.commenter.pk == request.user.pk:
                         comment.candelete = True
        
-                
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata})
+       
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'hasComments':(len(posts[0].comment_set.all())>0) })
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
@@ -422,7 +422,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkPityBox()',
             }
         )
     )
@@ -432,7 +432,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkLaughWithBox()',
             }
         )
     )
@@ -442,7 +442,8 @@ class CommentForm(forms.Form):
             attrs={
                 'placeholder':'Make a comment...',
                 'class':'form-control',
-                'id':'comment',
+                'id':'commentArea',
+                'style':'display:none;',
             }
         )
     )

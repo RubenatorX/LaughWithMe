@@ -114,12 +114,70 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
     _filter: chroma(color=pink);
 }
 
+.wordwrap {   
+   word-wrap: break-word;  
+}
+
+.blueBorderHeader {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
 .blueBorder{
-    padding: 15px 30px;
+    padding: 20px 40px 15px 30px;
     border-width:3px;
     border-style:solid;
     border-color:#22b5da;
-    background-color: #E7E7EF;
+    background-color: #F5F5F8;
+}
+
+.comment {
+    border-width:2px;
+    border-color:#B9B9BF;
+    border-style:solid;
+    padding: 5px 5px 5px 5px;
+    background-color: #F9F9FB;
+}
+
+.commentShell {
+    padding: 10px 0px 0px 0px;
+}
+
+.wordwrap {     
+   word-wrap: break-word;      /* IE */
+}
+
+.cornerIcon {
+    position: absolute;
+    right: 25px;    
+}
+
+.smallBR {
+    padding: 10px 10px;
+}
+
+.iconLink {
+    color: #B9B9BF;
+    cursor: pointer;
+}
+
+i.iconLink:hover {
+    color: #000000;
+}
+
+font.commentTypename {
+    font-size: 9pt;
+    font-style: italic;
+    font-weight: bold;
+}
+
+font.username {
+    font-weight: bold;
+    font-size: 11pt;
+    color: #428BCA;
 }
 
 label.checkbox {
