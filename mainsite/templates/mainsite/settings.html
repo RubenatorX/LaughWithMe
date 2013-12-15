@@ -1,0 +1,33 @@
+{% extends 'mainsite/base-loggedin.html' %}
+
+{% block body %}
+Email Address: {{ user.email }}<br><br>
+Screen Name: {{ userdata.screenname }}<br><br>
+Update Password:<br>
+old password<br>
+new password<br>
+confirm password<br>
+change password button<br>
+Default Home Page:
+{% if message %}
+<font color=green><i> {{ message }}</i></font>
+{% endif %}
+<br>
+<form action="" method="post">{% csrf_token %}
+
+{% for view in choices %}
+<td align="left">
+<input  class="radiolist" 
+{% ifequal view.0 userdata.defaultview %} checked="checked" {% endifequal %}
+name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
+{% ifequal view.0 userdata.defaultview %}<b>{% endifequal %}
+&nbsp;{{ view.1 }}
+{% ifequal view.0 userdata.defaultview %}</b>{% endifequal %}<br>
+</td>
+{% endfor %}
+<button type="submit" class="btn btn-success">Save</button>
+</form>
+save button<br>
+Manage Favorites:<br>
+username  removeButton<br>
+{% endblock %}

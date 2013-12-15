@@ -9,7 +9,6 @@ from models import *
 from django.contrib.auth import logout
 from captcha.fields import ReCaptchaField
 import re
-
 # Create your views here.
 
 
@@ -24,13 +23,13 @@ def DefaultView(request):
     ignore = 'NULL'
     if request.user.is_authenticated():
         v = request.user.userdata.defaultview
-        if v == UserData.DEFAULT_MYPOSTS:
+        if v == DEFAULT_MYPOSTS:
             return MyPostsView(request, ignore)
-        elif v == UserData.DEFAULT_TRENDING:
+        elif v == DEFAULT_TRENDING:
             return MyPostsView(request, ignore)###
-        elif v == UserData.DEFAULT_FAVORITES:
+        elif v == DEFAULT_FAVORITES:
             return MyPostsView(request, ignore)
-        elif v == UserData.DEFAULT_MATCHES:
+        elif v == DEFAULT_MATCHES:
             return MyPostsView(request, ignore)###
         else:            
             return MyPostsView(request, ignore)##
@@ -147,21 +146,17 @@ def RegistrationView(request, ignore):
 
 def PersonView(request, username): #testing
     if request.user.is_authenticated():
+        try:
+            user = UserData.objects.all().get(screenname=username)
+        except:
+            user = None
         if request.method == 'POST': # Modify
-            '''form = Form(request.POST)
-            if form.is_valid():
-                pass #process stuff
-            else:
-                pass #bad error'''
-            pass
+            request.user.userdata.addFavorite(user)
+            return redirect("/user/"+username)
         else:
             pass #return normal stuff
             ##sanatize the screenname if necessary here
             pass
-            try:
-                user = UserData.objects.all().get(screenname=username)
-            except:
-                user = None
             if user != None:
                 posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
                 for post in posts:
@@ -173,7 +168,8 @@ def PersonView(request, username): #testing
                         for comment in post.comment_set.all():
                             if comment.commenter.pk == request.user.pk:
                                 comment.candelete = True
-                return render(request, 'mainsite/myPosts.html', {'posts':posts})
+                favorited=request.user.userdata.hasFavorite(user)
+                return render(request, 'mainsite/personPage.html', {'posts':posts, 'userdata':request.user.userdata, 'favorited':favorited})
             else:
                 pass
                 message = "username not found" #temp
@@ -186,18 +182,29 @@ def PersonView(request, username): #testing
 
 def SettingsView(request, ignore): #testing
     if request.user.is_authenticated():
+        message = None
         if request.method == 'POST': # Modify
+            print request.POST
+            if 'defaultviewchoice' in request.POST:
+                if request.POST['defaultviewchoice'] in [i[0] for i in defaultChoices()]:
+                    request.user.userdata.defaultview = request.POST['defaultviewchoice']
+                    message = "Saved"
+                else:
+                    print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
+                    pass #invalid form field
+            else:
+                print "1 %s not in %s" % ('defaultviewchoice', request.POST)
+                pass
             '''form = Form(request.POST)
             if form.is_valid():
                 pass #process stuff
             else:
                 pass #bad error'''
-            pass
         else:
             pass #return normal stuff
-            userdata = UserData.objects.all().filter(user=request.user).prefetch_related('userdata')
-            user = request.user
-            return render(request, 'mainsite/myPosts.html', {'posts':posts})
+        userdata = request.user.userdata
+        user = request.user
+        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message})
     else:
         return redirect('/')
     
@@ -296,8 +303,8 @@ def PostView(request, postid):
                     if comment.commenter.pk == request.user.pk:
                         comment.candelete = True
        
-       
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'hasComments':(len(posts[0].comment_set.all())>0) })
+                
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
@@ -446,7 +453,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
-                'onclick':'checkPityBox()',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )
@@ -456,7 +463,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
-                'onclick':'checkLaughWithBox()',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )
@@ -466,8 +473,7 @@ class CommentForm(forms.Form):
             attrs={
                 'placeholder':'Make a comment...',
                 'class':'form-control',
-                'id':'commentArea',
-                'style':'display:none;',
+                'id':'comment',
             }
         )
     )
@@ -480,6 +486,8 @@ class CommentForm(forms.Form):
             }
         )
     )
+
+
              
     
 '''#File Upload example

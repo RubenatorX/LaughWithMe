@@ -24,6 +24,18 @@ class CaseInsensitiveManager(Manager, fieldnames):
         return CaseInsensitiveQuerySet(self.model, fieldnames)
 '''
 
+DEFAULT_FAVORITES = 'Fav'
+DEFAULT_MYPOSTS = 'MP'
+DEFAULT_TRENDING = 'Trd'
+DEFAULT_MATCHES = 'Mtch'
+def defaultChoices():
+    return (
+        (DEFAULT_MYPOSTS, 'My Posts'),
+        (DEFAULT_TRENDING, 'Trending'),
+        (DEFAULT_FAVORITES, 'Favorites'),
+        (DEFAULT_MATCHES, 'Matches'),
+    )
+
 # Create your models here.
 class UserData(models.Model):
     user = models.OneToOneField(User, primary_key=True)
@@ -37,10 +49,6 @@ class UserData(models.Model):
     favorites = models.ManyToManyField('self', through='Favorite', 
                                            symmetrical=False, 
                                            related_name='userFavorites')
-    DEFAULT_FAVORITES = 'Fav'
-    DEFAULT_MYPOSTS = 'MP'
-    DEFAULT_TRENDING = 'Trd'
-    DEFAULT_MATCHES = 'Mtch'
     DEFAULT_VIEW_CHOICES = (
         (DEFAULT_MYPOSTS, 'My Posts'),
         (DEFAULT_TRENDING, 'Trending'),
@@ -48,7 +56,7 @@ class UserData(models.Model):
         (DEFAULT_MATCHES, 'Matches'),
     )
     defaultview = models.CharField(max_length=5,
-                                      choices=DEFAULT_VIEW_CHOICES,
+                                      choices=defaultChoices(),
                                       default=DEFAULT_TRENDING)
     def addFavorite(self, target):
         created = Favorite.objects.get_or_create(
@@ -65,7 +73,9 @@ class UserData(models.Model):
         return
     def getFavorites(self):
         return self.userFavorites.filter(
-            favoritee__favoriter=self)
+            favoritee__user=self)
+    def hasFavorite(self, target):
+        return len(self.getFavorites().filter(pk=target.pk))==1
 class Tag(models.Model):
     tag = models.CharField(max_length=40, unique=True, validators=[MinLengthValidator(1),
             RegexValidator(

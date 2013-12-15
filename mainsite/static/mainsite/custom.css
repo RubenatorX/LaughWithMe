@@ -208,3 +208,7 @@ footer {
    display:block;
    margin:auto;
 }
+
+.radiolist {
+	margin: 0 10px 0 10px;
+}
