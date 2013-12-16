@@ -8,20 +8,20 @@
       <!-- Example row of columns -->
       <div class="col-md-4">
       <h3>Select a template</h3>
-      <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-        <input type="radio" name="template" value="text">
+      <form action="" method="post" checked="checked" enctype="multipart/form-data">{% csrf_token %}
+        <input type="radio" name="templateType" value="{{ templateChoices.0 }}">
             <div class="examplePost">
                 <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>         
             </div>
         </input>
             <br>
-        <input type="radio" name="template" value="textImage">
+        <input type="radio" name="templateType" value="{{ templateChoices.0 }}">
             <div class="examplePost">
                 <p> <img Width=30% left-margin=2px src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
             </div>
         </input>
             <br>
-        <input type="radio" name="template" value="textLargeImage">
+        <input type="radio" name="templateType" value="{{ templateChoices.1 }}">
             <div class="examplePost">
                  <img Width=100% left-margin=2px src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">
                  <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    

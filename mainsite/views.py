@@ -65,24 +65,28 @@ def MyPostsView(request, ignore): ## incomplete
             return redirect('/')    
 def NewPostView(request, ignore):
     if request.user.is_authenticated():
+        choices = templateChoices()
+        tlist = [i[0] for i in choices]
         if request.method == 'POST': # If the form has been submitted...
             form = NewPostForm(request.POST, request.FILES)
-            print form.data
             if form.is_valid():
-                print "image is %s" % form.cleaned_data['image']
+                templateType = choices[0][0]
+                if 'templateType' in request.POST and request.POST['templateType'] in tlist:
+                    templateType = request.POST['templateType']
                 post = Post(user=request.user.userdata,
                             image=form.cleaned_data['image'],
                             title=form.cleaned_data["postTitle"],
-                            text=form.cleaned_data["post"]
+                            text=form.cleaned_data["post"],
+                            template=templateType
                 )
                 post.save()
                 return redirect('/post/' + str(post.pk))
             else:
                 #return form with errors
-                return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':form})
+                return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':form, 'templateChoices':tlist})
         else:
             #return empty form
-            return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':NewPostForm()})
+            return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':NewPostForm(), 'templateChoices':tlist})
     else:
         return redirect('/')
 def LoginView(request, ignore):

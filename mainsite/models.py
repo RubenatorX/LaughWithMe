@@ -36,6 +36,14 @@ def defaultChoices():
         (DEFAULT_MATCHES, 'Matches'),
     )
 
+TEMPLATE_LARGE = 'LG'
+TEMPLATE_SMALL = 'SM'
+def templateChoices():
+    return (
+        (TEMPLATE_LARGE, 'Large Image'),
+        (TEMPLATE_SMALL, 'Small Image'),
+    )
+
 # Create your models here.
 class UserData(models.Model):
     user = models.OneToOneField(User, primary_key=True)
@@ -101,6 +109,9 @@ class Post(models.Model):
     image = models.ImageField(upload_to=imagepath)
     tags = models.ManyToManyField(Tag)
     date = models.DateTimeField(auto_now_add=True)
+    template = models.CharField(max_length=5,
+                                      choices=templateChoices(),
+                                      default=TEMPLATE_LARGE)
 class Favorite(models.Model):
     user = models.ForeignKey(UserData, related_name='favoriter')
     favorite = models.ForeignKey(UserData, related_name='favoritee')
