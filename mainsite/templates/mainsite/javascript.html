@@ -1,0 +1,17 @@
+ <script type="text/javascript">
+        
+        function confirmDeleteComment(id) {
+            var formID = "#deleteComment";
+            formID = formID.concat(id);
+            if(confirm('Are you sure you would like to delete this comment?'))
+                $(formID).submit();                
+        }
+        
+        function confirmDeletePost(id) {
+            var formID = "#deletePost";
+            formID = formID.concat(id);
+            if(confirm("Are you sure you would like to delete this post?"))
+                $(formID).submit();  
+        }
+        
+</script>

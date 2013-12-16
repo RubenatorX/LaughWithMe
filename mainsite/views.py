@@ -40,6 +40,31 @@ def AboutView(request, ignore):
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
 def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
+        
+            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')        
+        
+            if "postID" in request.POST:
+                print "Post to delete: %s" %request.POST['postID']
+                post = None
+                for p in posts:
+                    print "post id: %s\n" % p.pk
+                    if int(request.POST['postID']) == p.pk:
+                        post = p
+                        break
+                
+                if post == None: #this is bad
+                    return render(request, 'mainsite/message.html', {'message':"The post wasn't found... could not delete"})
+                
+                if post.user.pk == request.user.pk:
+                    #go for it
+                    if post.image:
+                        post.image.delete()
+                    post.delete()
+                else:
+                    #you aren't the user, no permission
+                    pass
+                return redirect("/myposts")
+
             if request.method == 'POST': # Modify
                 '''form = Form(request.POST)
                 if form.is_valid():
@@ -48,7 +73,6 @@ def MyPostsView(request, ignore): ## incomplete
                     pass #bad error'''
                 pass
             pass #return normal stuff
-            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
 
             for post in posts:
                 if post.user.pk == request.user.pk:
@@ -323,7 +347,7 @@ def PostView(request, postid):
                         comment.candelete = True
        
                 
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata})
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'hasComments':len(posts[0].comment_set.all()) > 0 })
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
@@ -492,7 +516,8 @@ class CommentForm(forms.Form):
             attrs={
                 'placeholder':'Make a comment...',
                 'class':'form-control',
-                'id':'comment',
+                'id':'commentArea',
+                'style':'display:none;',
             }
         )
     )

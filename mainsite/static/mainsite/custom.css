@@ -6,7 +6,7 @@
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
 
-.navbarbuffer{margin-top:50px;color:inherit;background-color:inherit}
+.navbarbuffer{margin-top:60px;color:inherit;background-color:inherit}
 
 .navbar-brand{float:left;padding:15px 25px;font-size:18px;line-height:20px}
 
@@ -134,6 +134,14 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
     background-color: #F5F5F8;
 }
 
+.blueBorderPost{
+    padding: 20px 40px 20px 40px;
+    border-width:3px;
+    border-style:solid;
+    border-color:#22b5da;
+    background-color: #F5F5F8;
+}
+
 .comment {
     border-width:2px;
     border-color:#B9B9BF;
@@ -146,17 +154,35 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
     padding: 10px 0px 0px 0px;
 }
 
+p.countInformation {
+    position: absolute;
+    right: 25px;
+    bottom: 2px;
+    font-size: 8pt;
+    
+}
+
 .wordwrap {     
    word-wrap: break-word;      /* IE */
 }
 
-.cornerIcon {
+.commentDeleteIcon {
     position: absolute;
     right: 25px;    
 }
 
+.cornerIcon {
+    position: absolute;
+    right: 5px;
+    top: 2px;
+}
+
 .smallBR {
     padding: 10px 10px;
+}
+
+.meduimBR {
+    padding: 15px 15px;
 }
 
 .iconLink {
@@ -183,6 +209,12 @@ font.username {
 font.PostTitle {
     font-weight: bold;
     font-size: 20pt;
+    color: #22b5da;
+}
+
+font.PostTitle-md {
+    font-weight: bold;
+    font-size: 15pt;
     color: #22b5da;
 }
 
@@ -222,17 +254,22 @@ footer {
    height:2px;   /* Height of the footer */
 }
 
-
-#imagecontainer-large {
-   width: 530px;
-   height: 300px;
-}
-
-#imagecontainer-large img {
-   width: 100%;
+img.imagecontainer-large  {
+   max-width: 95%;
+   max-height: 75%;
    display:block;
    margin:auto;
+   padding: 0px 0px 15px 0px;
 }
+
+img.imagecontainer-small {
+   max-width: 50%;
+   max-height: 40%;
+   display:inline;
+   margin:auto;
+   padding: 0px 7px 0px 0px;
+}
+
 
 .radiolist {
 	margin: 0 10px 0 10px;
