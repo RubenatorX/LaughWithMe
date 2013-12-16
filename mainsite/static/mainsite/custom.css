@@ -180,10 +180,35 @@ font.username {
     color: #428BCA;
 }
 
+font.PostTitle {
+    font-weight: bold;
+    font-size: 20pt;
+    color: #22b5da;
+}
+
+
+button.right {
+    float: right;
+}
+
 label.checkbox {
     font-size: 8pt;
  }
 
+.alignLeft {
+    float: left;
+    float: bottom;
+    width: 50%;
+}
+
+.alignRight {
+    float: right;
+    float: bottom;
+    width: 50%;
+    text-align: right;
+}
+ 
+ 
 html,
 body {
    margin:0;
