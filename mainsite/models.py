@@ -72,10 +72,12 @@ class UserData(models.Model):
         toDelete.delete()
         return
     def getFavorites(self):
-        return self.userFavorites.filter(
-            favoritee__user=self)
+        return Favorite.objects.all().filter(
+            user=self).prefetch_related('favorite__user')
     def hasFavorite(self, target):
-        return len(self.getFavorites().filter(pk=target.pk))==1
+        return len(Favorite.objects.all().filter(user=self, favorite=target)) ==1
+    def __unicode__(self):
+        return self.screenname
 class Tag(models.Model):
     tag = models.CharField(max_length=40, unique=True, validators=[MinLengthValidator(1),
             RegexValidator(

@@ -150,9 +150,19 @@ def PersonView(request, username): #testing
             user = UserData.objects.all().get(screenname=username)
         except:
             user = None
+        if request.user.pk == user.pk:
+            return redirect('/myposts')
         if request.method == 'POST': # Modify
-            request.user.userdata.addFavorite(user)
-            return redirect("/user/"+username)
+            if user != None and 'favoriteID' in request.POST and int(request.POST['favoriteID'])==user.pk and user.pk != request.user.pk:
+                request.user.userdata.addFavorite(user)
+                request.user.userdata.save()
+                return redirect("/user/"+username)
+            else:
+                print "user=%s" % user
+                print "'favoriteID' in request.POST=%s"% ('favoriteID' in request.POST)
+                print "post=%s" % request.POST
+                print "request.POST['favoriteID']==user.pk=%s" % request.POST['favoriteID']==user.pk
+                
         else:
             pass #return normal stuff
             ##sanatize the screenname if necessary here
@@ -169,7 +179,9 @@ def PersonView(request, username): #testing
                             if comment.commenter.pk == request.user.pk:
                                 comment.candelete = True
                 favorited=request.user.userdata.hasFavorite(user)
-                return render(request, 'mainsite/personPage.html', {'posts':posts, 'userdata':request.user.userdata, 'favorited':favorited})
+                
+                print 'favorited=request.user.userdata.hasFavorite(user)=%s' % favorited
+                return render(request, 'mainsite/personPage.html', {'posts':posts, 'userdata':request.user.userdata, 'favorited':favorited, 'viewuser':user})
             else:
                 pass
                 message = "username not found" #temp
@@ -204,7 +216,10 @@ def SettingsView(request, ignore): #testing
             pass #return normal stuff
         userdata = request.user.userdata
         user = request.user
-        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message})
+        favorites = userdata.getFavorites()
+        for favorite in favorites:
+            print favorite.favorite.screenname
+        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'favorites':favorites})
     else:
         return redirect('/')
     

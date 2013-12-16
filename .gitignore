@@ -221,3 +221,4 @@ update/
 lolTrueStory/dbsettings.py
 *.pyc
 lolTrueStory/uploadsettings.py
+mainsite/static/mainsite/user/*

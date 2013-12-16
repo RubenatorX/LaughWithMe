@@ -29,5 +29,8 @@ name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
 </form>
 save button<br>
 Manage Favorites:<br>
+{% for favorite in favorites %}
+{{ favorite.favorite.screenname }} <br>
+{% endfor %}
 username  removeButton<br>
 {% endblock %}
