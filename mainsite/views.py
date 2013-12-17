@@ -65,12 +65,11 @@ def MyPostsView(request, ignore): ## incomplete
                     for comment in post.comment_set.all():
                         if comment.commenter.pk == request.user.pk:
                             comment.candelete = True
-                commentcount = len(post.comment_set.all().exclude(text=u''))
-                pitycount = len(post.comment_set.all().filter(type=COMMENT_PITY))
-                laughcount = len(post.comment_set.all().filter(type=COMMENT_LAUGHWITH))
+                post.commentcount = len(post.comment_set.all().exclude(text=u''))
+                post.pitycount = len(post.comment_set.all().filter(type=COMMENT_PITY))
+                post.laughcount = len(post.comment_set.all().filter(type=COMMENT_LAUGHWITH))
             
-            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata, 'commentcount':commentcount,
-                                                             'pitycount':pitycount, 'laughcount':laughcount})
+            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata})
         else:
             return redirect('/')    
 def NewPostView(request, ignore):
