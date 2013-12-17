@@ -383,10 +383,13 @@ def FavoritesView(request, ignore):
                 pass #bad error'''
             pass
         pass #return normal stuff
-        
-        
-        posts = Post.objects.all().filter(user__in=request.user.userdata.getFavorites()).prefetch_related('user', 'comment_set__commenter', 'tags')
 
+        favoriteUsers = [i.favorite for i in request.user.userdata.getFavorites()]
+        posts = Post.objects.all().filter(user__in=favoriteUsers).prefetch_related('user', 'comment_set__commenter', 'tags')
+
+        print request.user.userdata.getFavorites()
+        print posts
+        
         posts = processPosts(posts, request)
             
             
