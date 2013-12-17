@@ -73,7 +73,11 @@ def MyPostsView(request, ignore): ## incomplete
                     pass #bad error'''
                 pass
             pass #return normal stuff
-
+            COMMENT_PITY = 2
+            COMMENT_LAUGHWITH = 1
+            commentcount = 0
+            pitycount = 0
+            laughcount = 0
             for post in posts:
                 if post.user.pk == request.user.pk:
                     post.candelete = True
@@ -83,8 +87,12 @@ def MyPostsView(request, ignore): ## incomplete
                     for comment in post.comment_set.all():
                         if comment.commenter.pk == request.user.pk:
                             comment.candelete = True
+                commentcount = len(post.comment_set.all().exclude(text=u''))
+                pitycount = len(post.comment_set.all().filter(type=COMMENT_PITY))
+                laughcount = len(post.comment_set.all().filter(type=COMMENT_LAUGHWITH))
             
-            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata})
+            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata, 'commentcount':commentcount,
+                                                             'pitycount':pitycount, 'laughcount':laughcount})
         else:
             return redirect('/')    
 def NewPostView(request, ignore):
@@ -110,6 +118,7 @@ def NewPostView(request, ignore):
                 return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':form, 'templateChoices':tlist})
         else:
             #return empty form
+
             return render(request, 'mainsite/newPost.html', {'userdata':request.user.userdata, 'form':NewPostForm(), 'templateChoices':tlist})
     else:
         return redirect('/')
