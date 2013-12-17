@@ -244,8 +244,17 @@ def SettingsView(request, ignore): #testing
                 else:
                     print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
                     pass #invalid form field
+            elif 'favoriteID' in request.POST:
+                try:
+                    f = Favorite.objects.filter(user=request.user, favorite=request.POST['favoriteID'])
+                    f.delete()
+                except:
+                    pass
             else:
-                print "1 %s not in %s" % ('defaultviewchoice', request.POST)
+                passwordForm = ResetPasswordForm(request.user, request.POST)
+                if passwordForm.is_valid():
+                    request.user.set_password(passwordForm.cleaned_data['password'])
+                    passwordForm = ResetPassForm(request.user)
                 pass
             '''form = Form(request.POST)
             if form.is_valid():
@@ -253,13 +262,14 @@ def SettingsView(request, ignore): #testing
             else:
                 pass #bad error'''
         else:
+            passwordForm = ResetPasswordForm(request.user)
             pass #return normal stuff
         userdata = request.user.userdata
         user = request.user
         favorites = userdata.getFavorites()
         for favorite in favorites:
             print favorite.favorite.screenname
-        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'favorites':favorites})
+        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'favorites':favorites, 'passwordForm':passwordForm})
     else:
         return redirect('/')
     
@@ -560,6 +570,65 @@ class CommentForm(forms.Form):
             }
         )
     )
+
+class ResetPasswordForm(forms.Form):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+    oldpassword = forms.CharField(max_length=32,
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'placeholder':'old password',
+                'class':'form-control',
+                'id':'oldPassField',
+            }
+        )
+    )
+    password = forms.CharField(max_length=32,
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'placeholder':'new password',
+                'class':'form-control',
+                'id':'passField',
+            }
+        )
+    )
+    passwordconfirm = forms.CharField(max_length=32,
+        widget=forms.PasswordInput(
+            render_value=True,
+            attrs={
+                'placeholder':'confirm password',
+                'class':'form-control',
+            }
+        )
+    )
+    
+    def clean(self):
+        form_data = self.cleaned_data
+        if 'password' in form_data and 'passwordconfirm' in form_data:
+            if form_data['password'] != form_data['passwordconfirm']:
+                self._errors["password"]= "Passwords do not match"
+                del form_data['password']
+                return form_data
+        else :
+            self._errors["password"]= "These fields are required"
+            return form_data
+        if not re.match(r'^(?=.*[a-zA-Z])(?=.*\d).+$', self.cleaned_data['password']):
+            self._errors['password']= 'Password must contain letters and a numbers.'
+            return form_data
+        return form_data
+    def clean_oldpassword(self):
+        form_data = self.cleaned_data
+        if 'oldpassword' in self.cleaned_data:
+            pwd = self.cleaned_data['oldpassword']
+            user = authenticate(username=self.user.username, password=form_data['oldpassword'])
+            if user is None:
+                self._errors["oldpassword"] = "Old Password incorrect"                
+        else:
+            self._errors["oldpassword"]= "Old Password is required."
+        return form_data['oldpassword']
 
 
              
