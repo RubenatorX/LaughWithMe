@@ -15,7 +15,7 @@
 	    	<div class="errorcallout">You have reached the maximum number of failed login attempts. You may try again later.</div>
 	    {% else %}
 	    {% if loginError %}
-	      <div class="errorcallout">{{ loginError }}</div>
+	      <div id="badLogin" class="errorcallout">{{ loginError }}</div>
             {% endif %}
 	    {% if loginform.non_field_errors %}
 	      <div class="errorcallout">{{ form.non_field_errors }}</div>
@@ -42,6 +42,16 @@
       </div>
       <div class="col-md-3"></div>
     </div>     
+    
+    
+<script type="text/javascript">
+   
+    function removeError() {
+        $('#badLogin').hide();
+    }
+
+    
+</script>
     
     {% endblock %}   
       

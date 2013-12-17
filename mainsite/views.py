@@ -429,6 +429,7 @@ class LoginForm(forms.Form):
             attrs={
                 'placeholder':'email',
                 'class':'form-control',
+                'onkeyup':'removeError()',
             }
         )
     )
@@ -438,6 +439,7 @@ class LoginForm(forms.Form):
             attrs={
                 'placeholder':'password',
                 'class':'form-control',
+                'onkeyup':'removeError()',
             }
         )
     )

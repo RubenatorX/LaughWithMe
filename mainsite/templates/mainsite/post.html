@@ -9,8 +9,8 @@
 <div class="col-md-3"></div> 
 <div class="col-md-6">
 <div class="row">
-    <p class="alignLeft"><font class="PostTitle"><a href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
-    <p class="alignRight"><font class="username">{{ post.user.screenname }}</font></span></p>
+    <p class="alignLeft"><font class="PostTitle"><a class="TitleLink"  href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
+    <p class="alignRight"><font class="username"><a class="TitleLink" href="/user/{{ post.user.screenname }}">{{ post.user.screenname }}</a></font></span></p>
 </div>
 </div>
 <div class="col-md-3"></div>

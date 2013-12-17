@@ -33,7 +33,7 @@ def defaultChoices():
         (DEFAULT_MYPOSTS, 'My Posts'),
         (DEFAULT_TRENDING, 'Trending'),
         (DEFAULT_FAVORITES, 'Favorites'),
-        (DEFAULT_MATCHES, 'Matches'),
+        #(DEFAULT_MATCHES, 'Matches'),
     )
 
 TEMPLATE_LARGE = 'LG'
@@ -61,7 +61,7 @@ class UserData(models.Model):
         (DEFAULT_MYPOSTS, 'My Posts'),
         (DEFAULT_TRENDING, 'Trending'),
         (DEFAULT_FAVORITES, 'Favorites'),
-        (DEFAULT_MATCHES, 'Matches'),
+        #(DEFAULT_MATCHES, 'Matches'),
     )
     defaultview = models.CharField(max_length=5,
                                       choices=defaultChoices(),
