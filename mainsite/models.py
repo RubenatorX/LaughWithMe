@@ -112,9 +112,13 @@ class Post(models.Model):
     template = models.CharField(max_length=5,
                                       choices=templateChoices(),
                                       default=TEMPLATE_LARGE)
+    class Meta:
+        ordering = ['-date']
 class Favorite(models.Model):
     user = models.ForeignKey(UserData, related_name='favoriter')
     favorite = models.ForeignKey(UserData, related_name='favoritee')
+    class Meta:
+        ordering = ['favorite__screenname']
 class Comment(models.Model):
     post = models.ForeignKey(Post)
     commenter = models.ForeignKey(UserData)
@@ -140,6 +144,8 @@ class Comment(models.Model):
         else :
             typename = None
         return typename
+    class Meta:
+        ordering = ['-date']
         
 class Notification(models.Model):
     user = models.ForeignKey(UserData)

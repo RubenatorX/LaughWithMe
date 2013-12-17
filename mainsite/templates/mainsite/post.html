@@ -151,7 +151,8 @@
 <div class="col-md-6 blueBorder">
 <font class="blueBorderHeader">Comments:</font>
 {% if hasComments %}
-    {% for comment in post.comment_set.all %}    
+    {% for comment in post.comment_set.all %}  
+    {% if comment.notempty %}  
 <div class="commentShell">
     <font class="username">{{ comment.commenter.screenname }}</font>
     
@@ -170,6 +171,7 @@
 
     </div>
 </div>
+    {% endif %}
     {% endfor %}
 
 {% else %}
