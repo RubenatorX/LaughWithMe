@@ -6,6 +6,8 @@
 
 .btn-done:hover,.btn-done:focus,.btn-done:active,.btn-done.active,.open .dropdown-toggle.btn-done{color:#fff;background-color:#33D685;border-color:#33D685; cursor: default;}
 
+.green { color: #33D685;}
+
 .row-btm{margin-right:-15px;margin-left:-15px;margin-top:30px}
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
@@ -213,15 +215,27 @@ p.countInformation {
    word-wrap: break-word;      /* IE */
 }
 
+.manageFavorites {
+    padding: 5px 5px;
+}
+
 .commentDeleteIcon {
     position: absolute;
     right: 25px;    
+}
+
+.favDeleteIcon {
+
 }
 
 .cornerIcon {
     position: absolute;
     right: 5px;
     top: 2px;
+}
+
+.BR5 {
+    padding: 5px 5px;
 }
 
 .smallBR {
@@ -239,6 +253,18 @@ p.countInformation {
 
 i.iconLink:hover {
     color: #000000;
+}
+
+font.settingsHeading {
+    font-weight: bold;
+    font-size: 16pt;
+    color: #000000;
+}
+
+font.settingsField {
+    font-weight: bold;
+    font-size: 11pt;
+    color: #428BCA;
 }
 
 font.commentTypename {
