@@ -192,6 +192,12 @@ def PersonView(request, username): #testing
             user = UserData.objects.all().get(screenname=username)
         except:
             user = None
+        if 'searchBox' in request.POST and request.method == 'POST' and user is None: #search result
+            return redirect("/user/"+request.POST['searchBox'].lstrip().split(" ")[0])
+        if user == None: #the user isn't in the system
+            return render(request, 'mainsite/message.html', {'message':"No Search Results"})
+            
+
         if request.user.pk == user.pk:
             return redirect('/myposts')
         if request.method == 'POST': # Modify
@@ -281,6 +287,11 @@ def SettingsView(request, ignore): #testing
 def PostView(request, postid):
     if request.user.is_authenticated():        
         posts = Post.objects.all().filter(pk=int(postid)).prefetch_related('comment_set__commenter', 'tags')
+
+        if "noticicationID" in request.POST:
+            print "notificationID found"
+            posts[0].seen()
+            return HttpResponse()
         
         form = CommentForm(request.POST)
         
@@ -289,8 +300,6 @@ def PostView(request, postid):
             message = "post not found " + postid #temp
             return render(request, 'mainsite/message.html', {'message':message}) #temp
                 ##run some sort of search
-        if "noticicationID" in request.POST:
-                posts[0].seen()
         
         elif "postID" in request.POST:
             post = posts[0]

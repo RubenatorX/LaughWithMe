@@ -17,7 +17,7 @@
 </div>
 <div class="navbar-header">
     <div class="form-group">
-        <a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %} ({{userdata.notifications }}){% endif %}</a>
+        <a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %}<div id="notes"> ({{userdata.notifications }})</div>{% endif %}</a>
         <a class="navbar-brand" href="/trending">Trending</a>
         <a class="navbar-brand" href="/favorites">Favorites</a>
         <!--<a class="navbar-brand" href="#">Matches</a>-->
