@@ -335,7 +335,7 @@ def PostView(request, postid):
        
               
         templates = [i[0] for i in templateChoices()]
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'templates':templates})
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'templates':templates, 'hasComments': len(posts[0].comment_set.all()) > 0})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
