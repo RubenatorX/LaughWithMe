@@ -461,6 +461,34 @@ def TrendingView(request, ignore):
     else:
         return redirect('/')
 
+def MyActivityView(request, ignore):
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            '''form = Form(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error'''
+            pass
+        pass #return normal stuff
+        
+           
+        favoriteUsers = [i.favorite for i in request.user.userdata.getFavorites()]
+
+        c = Comment.objects.all().filter(commenter=request.user)
+        mycomments = [i.pk for i in c]
+        
+        posts = Post.objects.all().filter(comment__pk__in=mycomments).prefetch_related('user', 'comment_set__commenter', 'tags')
+        posts = processPosts(posts, request)
+            
+            
+        templates = [i[0] for i in templateChoices()]
+
+            
+        return render(request, 'mainsite/myactivity.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
+    else:
+        return redirect('/')
+
 class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
         widget=forms.TextInput(
