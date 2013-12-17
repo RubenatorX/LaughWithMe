@@ -84,6 +84,16 @@ class UserData(models.Model):
             user=self).prefetch_related('favorite__user')
     def hasFavorite(self, target):
         return len(Favorite.objects.all().filter(user=self, favorite=target)) ==1
+    @property
+    def notifications(self):
+        n = Notification.objects.all().filter(
+            user=self)
+        l = len(n)
+        print "l=%d" %l
+        if l == 0:
+            return None
+        else:
+            return l
     def __unicode__(self):
         return self.screenname
 class Tag(models.Model):
@@ -113,10 +123,23 @@ class Post(models.Model):
                                       choices=templateChoices(),
                                       default=TEMPLATE_LARGE)
     def notify(self):
+        print "post notify self"
         created = Notification.objects.get_or_create(
             user=self.user,
             activity=self
             )
+        print created
+        return created
+    def seen(self):
+        try:
+            toDelete = Notification.objects.get(
+                user=self.user,
+                activity=self
+                )
+            toDelete.delete()
+            return
+        except:
+            return
     class Meta:
         ordering = ['-date']
 class Favorite(models.Model):
@@ -140,6 +163,7 @@ class Comment(models.Model):
     )
     type = models.IntegerField(default=0)
     def notify(self):
+        print "comment notify self"
         self.post.notify()
     @property
     def typename(self):

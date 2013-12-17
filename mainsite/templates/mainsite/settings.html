@@ -3,11 +3,26 @@
 {% block body %}
 Email Address: {{ user.email }}<br><br>
 Screen Name: {{ userdata.screenname }}<br><br>
-Update Password:<br>
-old password<br>
-new password<br>
-confirm password<br>
-change password button<br>
+Update Password: {% if message %}
+<font color=green><i> {{ passwordmessage }}</i></font>
+{% endif %}<br>
+<form action="" method="post">{%csrf_token%}
+<div class="form-group">
+{% if passwordForm.non_field_errors %}
+	<div class="errorcallout">{{ form.non_field_errors }}</div>
+{% endif %}
+{{passwordForm.oldpassword}}<br>
+{% if passwordForm.oldpassword.errors %}
+                <div class="errorcallout"><b>{{ passwordForm.oldpassword.errors }}</b><b class="topnotch"/></b></div>
+{% endif %}
+{{passwordForm.password}}<br>
+{{passwordForm.passwordconfirm}}<br>
+{% if passwordForm.password.errors %}
+                <div class="errorcallout"><b>{{ passwordForm.password.errors }}</b><b class="topnotch"/></b></div>
+{% endif %}
+<button type="submit" class="btn btn-success">Change Password</button>
+</div>
+</form>
 Default Home Page:
 {% if message %}
 <font color=green><i> {{ message }}</i></font>
@@ -30,7 +45,7 @@ name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
 save button<br>
 Manage Favorites:<br>
 {% for favorite in favorites %}
-{{ favorite.favorite.screenname }} <br>
+{{ favorite.favorite.screenname }}<form action="" method="post">{%csrf_token%}<!-- button stuff... value="{{favorite.favorite.pk}}" ... --></form>
 {% endfor %}
 username  removeButton<br>
 {% endblock %}
