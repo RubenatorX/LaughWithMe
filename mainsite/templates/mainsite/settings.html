@@ -1,59 +1,84 @@
 {% extends 'mainsite/base-loggedin.html' %}
 
 {% block body %}
-Email Address: {{ user.email }}<br><br>
-Screen Name: {{ userdata.screenname }}<br><br>
-Update Password: {% if passwordmessage %}
-<font color=green><i> {{ passwordmessage }}</i></font>
-{% endif %}<br>
-<form action="" method="post">{%csrf_token%}
-<div class="form-group">
-{% if passwordForm.non_field_errors %}
-	<div class="errorcallout">{{ form.non_field_errors }}</div>
-{% endif %}
-{{passwordForm.oldpassword}}<br>
-{% if passwordForm.oldpassword.errors %}
-                <div class="errorcallout"><b>{{ passwordForm.oldpassword.errors }}</b><b class="topnotch"/></b></div>
-{% endif %}
-{{passwordForm.password}}<br>
-{{passwordForm.passwordconfirm}}<br>
-{% if passwordForm.password.errors %}
-                <div class="errorcallout"><b>{{ passwordForm.password.errors }}</b><b class="topnotch"/></b></div>
-{% endif %}
-<button type="submit" class="btn btn-success">Change Password</button>
-</div>
-</form>
-Default Home Page:
-{% if message %}
-<font color=green><i> {{ message }}</i></font>
-{% endif %}
-<br>
-<form action="" method="post">{% csrf_token %}
 
-{% for view in choices %}
-<td align="left">
-<input  class="radiolist" 
-{% ifequal view.0 userdata.defaultview %} checked="checked" {% endifequal %}
-name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
-{% ifequal view.0 userdata.defaultview %}<b>{% endifequal %}
-&nbsp;{{ view.1 }}
-{% ifequal view.0 userdata.defaultview %}</b>{% endifequal %}<br>
-</td>
-{% endfor %}
-<button type="submit" class="btn btn-success">Save</button>
-</form>
-save button<br>
-Manage Favorites:<br>
-{% for favorite in favorites %}
-{{ favorite.favorite.screenname }}
-<form action="" method="post" id="deleteFav{{favorite.favorite.pk}}">{% csrf_token %}
-    <input type="hidden" name="favID" value="{{ favorite.favorite.pk }}">
-       <i class="fa fa-trash-o iconLink" onclick="confirmDeleteFav({{favorite.favorite.pk}})"></i>
- </form>
-
-
-{% endfor %}
-username  removeButton<br>
+<div class="container">
+      <div class="col-md-3"></div>
+      <div class = "col-md-6">
+        <font class="PageTitle">Settings</font>
+        <div class="smallBR"></div>
+            <p><font class="settingsField">Email Address:</font>   {{ user.email }}</p>
+            <p><font class="settingsField">Screen Name:</font>&nbsp;  {{ userdata.screenname }}</p>
+            
+            <div class="smallBR"></div>
+                
+            <!-- PASSWORD CHANGE -->
+            <font class="settingsHeading">Update Password</font>
+            <div class="row">
+            <div class="col-md-8">
+                {% if passwordmessage %}
+                    <font class="green"><i> {{ passwordmessage }}</i></font>
+                {% endif %}<br>
+                <form action="" method="post">{%csrf_token%}
+                    <div class="form-group">
+                    {% if passwordForm.non_field_errors %}
+                        <div class="errorcallout">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    {{passwordForm.oldpassword}}<div class="BR5"></div>
+                    {% if passwordForm.oldpassword.errors %}
+                        <div class="errorcallout"><b>{{ passwordForm.oldpassword.errors }}</b><b class="topnotch"/></b></div>
+                    {% endif %}
+                    {{passwordForm.password}}<div class="BR5"></div>
+                    {{passwordForm.passwordconfirm}}<div class="BR5 "></div>
+                    {% if passwordForm.password.errors %}
+                        <div class="errorcallout"><b>{{ passwordForm.password.errors }}</b><b class="topnotch"/></b></div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-success">Change Password</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+            </div>
+            
+            <div class="smallBR"></div>
+            
+             <!-- HOME PAGE -->
+             <font class="settingsHeading">Default Home Page</font><br>
+            {% if message %}
+                <font class="green"><i> {{ message }}</i></font>
+            {% endif %}
+            <br>
+            <form action="" method="post">{% csrf_token %}
+            {% for view in choices %}
+                <td align="left">
+                <input  class="radiolist" 
+                    {% ifequal view.0 userdata.defaultview %} checked="checked" {% endifequal %}
+                name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
+                    {% ifequal view.0 userdata.defaultview %}<b>{% endifequal %}
+                &nbsp;{{ view.1 }}
+                    {% ifequal view.0 userdata.defaultview %}</b>{% endifequal %}<br>
+                </td>
+            {% endfor %}
+            <div class="BR5 "></div>
+            <button type="submit" class="btn btn-success">Save</button>
+            </form>
+            
+            <div class="smallBR"></div>
+            
+            <!-- MANAGE FAVORITES -->
+            <font class="settingsHeading">Manage Favorites</font><br>
+            {% for favorite in favorites %}
+            <div class="manageFavorites">
+                <form action="" method="post" id="deleteFav{{favorite.favorite.pk}}">{% csrf_token %}
+                    <input type="hidden" name="favID" value="{{ favorite.favorite.pk }}">
+                       <i class="fa fa-trash-o iconLink favDeleteIcon" onclick="confirmDeleteFav({{favorite.favorite.pk}})"></i>&nbsp;&nbsp;{{ favorite.favorite.screenname }}
+                 </form>    
+                
+            </div>
+            {% endfor %}
+      </div>
+      <div class="col-md-3"></div>
+    </div>
 
  <script type="text/javascript">
         
