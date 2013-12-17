@@ -232,6 +232,7 @@ p.countInformation {
     position: absolute;
     right: 5px;
     top: 2px;
+    z-index: 100;
 }
 
 .BR5 {
@@ -335,7 +336,7 @@ label.checkbox {
     text-align: right;*/
 }
 
-a.clickableDiv:link ,a.clickableDiv:visited ,a.clickableDiv:hover ,a.clickableDiv:active {color:#000000;text-decoration:none;} 
+a.clickableDiv:link ,a.clickableDiv:visited ,a.clickableDiv:hover ,a.clickableDiv:active {color:#000000;text-decoration:none; cursor: pointer;} 
 
 a.TitleLink:link ,a.TitleLink:visited ,a.TitleLink:hover ,a.TitleLink:active {text-decoration:none;}  
 

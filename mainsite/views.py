@@ -28,6 +28,7 @@ def summarizeComments(post):
     else:
         post.hasComment = True
     return summary
+    
 def processPosts(posts, request):
     COMMENT_PITY = 2
     COMMENT_LAUGHWITH = 1
@@ -49,6 +50,25 @@ def processPosts(posts, request):
         post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
         post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
     return posts
+    
+def checkDeletePost(posts, request):
+    if "postID" in request.POST:
+        post = None
+        for p in posts:
+            if p.pk == int(request.POST['postID']):
+                post = p
+        
+        if post != None:                        
+            if post.user.pk == request.user.pk:
+                #go for it
+                if post.image:
+                    post.image.delete()
+                post.delete()
+            else:
+                #you aren't the user, no permission
+                pass
+            return True
+    return False
 
 def WelcomeView(request):
     if request.user.is_authenticated():
@@ -78,18 +98,23 @@ def AboutView(request, ignore):
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
 def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
+            
             if request.method == 'POST': # Modify
                 '''form = Form(request.POST)
                 if form.is_valid():
                     pass #process stuff
                 else:
                     pass #bad error'''
-                pass
+                    
+                
             pass #return normal stuff
         
-           
-            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
 
+            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
+            
+            if checkDeletePost(posts, request):
+                return redirect("/myposts")
+            
             posts = processPosts(posts, request)
             
             
@@ -297,6 +322,7 @@ def PostView(request, postid):
                 ##run some sort of search        
         
         if "postID" in request.POST:
+            print 'deleting post'
             post = posts[0]
             if post.user.pk == request.user.pk:
                 #go for it
@@ -422,6 +448,9 @@ def TrendingView(request, ignore):
            
         posts = Post.objects.all().order_by('-date')[:25].prefetch_related('user', 'comment_set__commenter', 'tags')
 
+        if checkDeletePost(posts, request):
+                return redirect("/trending")
+        
         posts = processPosts(posts, request)
             
             

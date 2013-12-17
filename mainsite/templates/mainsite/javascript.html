@@ -12,12 +12,6 @@
             formID = formID.concat(id);
             if(confirm("Are you sure you would like to delete this post?"))
                 $(formID).submit();  
-        }
-        
-        function searchUser() {
-            var user = "http://localhost:8000/user/"+$('#searchBox').val();
-            alert(user);
-            window.location.href = user;
-        }
+        }        
         
 </script>
