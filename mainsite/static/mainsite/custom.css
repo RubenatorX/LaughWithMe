@@ -235,6 +235,13 @@ p.countInformation {
     z-index: 100;
 }
 
+.cornerIcon2 {
+    position: absolute;
+    right: 25px;
+    top: 2px;
+    z-index: 100;
+}
+
 .BR5 {
     padding: 5px 5px;
 }

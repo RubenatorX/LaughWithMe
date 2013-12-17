@@ -656,6 +656,7 @@ class CommentForm(forms.Form):
                 'class':'form-control',
                 'id':'commentArea',
                 'style':'display:none;',
+                'rows': '5', 
             }
         )
     )
