@@ -193,8 +193,11 @@ def PersonView(request, username): #testing
                         for comment in post.comment_set.all():
                             if comment.commenter.pk == request.user.pk:
                                 comment.candelete = True
+                    post.commentcount = len(post.comment_set.exclude(text=u''))
+                    post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
+                    post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
                 favorited=request.user.userdata.hasFavorite(user)
-                
+                                
                 print 'favorited=request.user.userdata.hasFavorite(user)=%s' % favorited
                 return render(request, 'mainsite/personPage.html', {'posts':posts, 'userdata':request.user.userdata, 'favorited':favorited, 'viewuser':user})
             else:
@@ -332,6 +335,9 @@ def PostView(request, postid):
                 for comment in post.comment_set.all():
                     if comment.commenter.pk == request.user.pk:
                         comment.candelete = True
+            post.commentcount = len(post.comment_set.exclude(text=u''))
+            post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
+            post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
        
               
         templates = [i[0] for i in templateChoices()]
