@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^settings(/|$)', views.SettingsView, name='SettingsView'),
     url(r'^favorites(/|$)', views.FavoritesView, name='FavoritesView'),
     url(r'^trending(/|$)', views.TrendingView, name='TrendingView')
+    url(r'^myactivity(/|$)', views.MyActivityView, name='MyActivityView')
 )

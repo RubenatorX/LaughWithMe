@@ -1,0 +1,23 @@
+{% extends 'mainsite/base-loggedin.html' %}
+{% block body %}
+
+<div class="container"> 
+<div class="col-md-2"></div> 
+<div class="col-md-8">
+<div class="col-md-8">
+    <div class="row">
+        <p class="alignLeft"><font class="PageTitle">My Activity</font></p>
+        <p class="alignRight"><a href="/newpost" type="submit" class="btn btn-success right">New Post</a></p>
+    </div>
+</div>
+<div class="col-md-4"></div>
+</div>
+<div class="col-md-2"></div>
+</div>
+
+{% include "mainsite/postlist.html" %}
+
+
+{% include "mainsite/javascript.html" %}
+
+{% endblock %}
