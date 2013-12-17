@@ -112,6 +112,11 @@ class Post(models.Model):
     template = models.CharField(max_length=5,
                                       choices=templateChoices(),
                                       default=TEMPLATE_LARGE)
+    def notify(self):
+        created = Notification.objects.get_or_create(
+            user=self.user,
+            activity=self
+            )
     class Meta:
         ordering = ['-date']
 class Favorite(models.Model):
@@ -134,7 +139,8 @@ class Comment(models.Model):
         (COMMENT_PITY, 'Pity')
     )
     type = models.IntegerField(default=0)
-    
+    def notify(self):
+        self.post.notify()
     @property
     def typename(self):
         if self.type == 1:
@@ -144,12 +150,14 @@ class Comment(models.Model):
         else :
             typename = None
         return typename
+        #Sanity Check?
+        return created
     class Meta:
         ordering = ['-date']
         
 class Notification(models.Model):
     user = models.ForeignKey(UserData)
-    activity = models.ForeignKey(Comment)
+    activity = models.ForeignKey(Post)
 
 
 
