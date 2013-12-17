@@ -30,12 +30,32 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
 
 .callout {
     position: relative;
-    margin: 10px 0;
+    margin: 10px 0px;
     padding: 5px 5px;
     border-width:3px;
     border-style:solid;
     border-color:#22b5da;
     background-color: #E7E7EF;
+    /* easy rounded corners for modern browsers */
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+
+pre.commentinside {
+    border-color:  #22b5da;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.commentcallout {
+    position: relative;
+    margin: 0px 0px;
+    padding: 5px 5px;
+    border-width:3px;
+    border-style:solid;
+    border-color:#22b5da;
+    background-color: #22b5da;
     /* easy rounded corners for modern browsers */
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -54,6 +74,27 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
 }
 
 .callout .sidenotch {
+    position: absolute;
+    top: 5px;
+    left: -20px;
+    margin: 0;
+    border-top: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #22b5da;
+    border-bottom: 10px solid transparent;
+    padding: 0;
+    width: 0;
+    height: 0;
+    /* ie6 height fix */
+    font-size: 0;
+    line-height: 0;
+     /* ie6 transparent fix */
+    _border-right-color: pink;
+    _border-left-color: pink;
+    _filter: chroma(color=pink);
+}
+
+.commentcallout .sidenotch {
     position: absolute;
     top: 5px;
     left: -20px;

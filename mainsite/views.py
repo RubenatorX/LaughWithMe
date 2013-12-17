@@ -519,7 +519,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkPityBox()',
             }
         )
     )
@@ -529,7 +529,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkLaughWithBox()',
             }
         )
     )

@@ -2,96 +2,89 @@
 {% block body %}
 
 <div class="container"> 
-<div class="col-md-3"></div> 
+<div class="col-md-2"></div> 
 <div class="col-md-6">
 <div class="row">
     <p class="alignLeft"><font class="PageTitle">My Posts</font></p>
     <p class="alignRight"><a href="/newpost" type="submit" class="btn btn-success right">New Post</a></p>
 </div>
 </div>
-<div class="col-md-3"></div>
+<div class="col-md-4"></div>
 </div>
 
 {% for post in posts %}
         <div class="container"> 
-        <div class="col-md-3"></div> 
-        <div class="col-md-6">
-        <div class="row">
-            <p class="alignLeft"><font class="PostTitle-md"><a href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
-            <p class="alignRight"><font class="username">{{ post.user.screenname }}</font></span></p>
+        <div class="col-md-2"></div> 
+        <div class="col-md-8">
+            <div class="col-md-8">
+                <div class="row">
+                    <p class="alignLeft"><font class="PostTitle-md"><a href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
+                    <p class="alignRight"><font class="username">{{ post.user.screenname }}</font></span></p>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
         </div>
-        </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
         </div>
 
 
         <div class="container">
-        <div class="col-md-3"></div> 
-        <div class="col-md-6 blueBorderPost" id="postdiv{{post.pk}}">
-        {% if post.candelete %}
-        <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
-            <input type="hidden" name="postID" value="{{ post.pk }}">
-               <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
-         </form>
-        {% endif %}
-        <!-- Image stuff -->
-        <div class="row wordwrap">
-            <div>
-            {% if post.image %}
-                {% ifequal post.template templates.0 %}
-                    <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage" />
-                {% else %}
-                    <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage" align="left"/>
-                {% endifequal %}
-            {% endif %}
-            {{ post.text }}
-            </div>
-            </div>
+        <div class="col-md-2"></div> 
+        <div class="col-md-8" id="postdiv{{post.pk}}">
+            <div class="col-md-8 blueBorderPost" id="innerPost{{post.pk}}" onclick="">
+                {% if post.candelete %}
+                <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
+                    <input type="hidden" name="postID" value="{{ post.pk }}">
+                       <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
+                 </form>
+                {% endif %}
+                <!-- Image stuff -->
+                <div class="row wordwrap">
+                    <div>
+                    {% if post.image %}
+                        {% ifequal post.template templates.0 %}
+                            <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage" />
+                        {% else %}
+                            <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage" align="left"/>
+                        {% endifequal %}
+                    {% endif %}
+                    {{ post.text }}
+                    </div>
+                    </div>
 
-        <div class="smallBR"></div>
-        <div>
-            <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
+                <div class="smallBR"></div>
+                <div>
+                    <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
+                </div>
+            </div>
+            <div class="col-md-4">
+                {% if post.hasComment %}
+                    <div class="commentcallout" id="postComments{{post.pk}}">
+                        <pre class="commentinside" id="commentText{{post.pk}}">{{post.commentSummary}}</pre>
+                        <b class="sidenotch"></b>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-
-        </div>
-        <!--<div class="col-md-3"></div>-->
+        <div class="col-md-2"></div>
         </div> 
         
         <div class="meduimBR"/>
 {% endfor %}
 
-<!--
-<table>
-{% for post in posts %}
-	<tr>
-		<td>{{ post.user.screenname }}: <a href="/post/{{ post.pk }}">{{ post.title }}</a>, {{ post.text }} {% if post.candelete %}<a href="">Delete</a>{% endif %}</td>
-		<td>{% for tag in post.tags.all %}#{{ tag.tag }}, {% endfor %} </td>
-		<td>{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}:{{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},{% endfor %}</td>
-	</tr>
-{% endfor %}
 
-</table>-->
-
-<div class="col-md-3">
-{% for post in posts %}
-	{% if post.hasComment %}
-		<div class="callout" id="postComments{{post.pk}}">
-                    <pre>{{post.commentSummary}}</pre>
-                    <b class="sidenotch"></b>
-                </div>
-	{% endif %}
-{% endfor %}
-</div>
- 
 <script type="text/javascript">
        
         function setLocations() {
             var position
-		{% for post in posts %}
-		position = $("#postdiv{{post.pk}}").offset()
-		$("#postComments{{post.pk}}").offset({top: position.top});
-		{% endfor %}
+            {% for post in posts %}
+                var height = $("#innerPost{{post.pk}}").height()+20;
+                position = $("#postdiv{{post.pk}}").offset()
+                $("#postComments{{post.pk}}").offset({top: position.top});
+                $("#commentText{{post.pk}}").css('max-height', height);
+            {% endfor %}
         }
+        
 	window.onload = setLocations;
 </script>
 
