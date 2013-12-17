@@ -1,16 +1,51 @@
 {% extends 'mainsite/base.html' %}
-{% load static %} 
+{% load static %}
+
 {% block navbar-left %}
+{% include "mainsite/javascript.html" %}
+<form class='navbar-form navbar-left'>
+<div class="form-group"> 
+	<form>
+        <div class="input-group search">
+            <input id="searchBox" type="text" class="form-control" placeholder="Search">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit" onclick="searchUser()"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </form>
+</div>
+</form>
 <div class="navbar-header">
+    <div class="form-group">
+        <a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %} ({{userdata.notifications }}){% endif %}</a>
+        <a class="navbar-brand" href="/trending">Trending</a>
+        <a class="navbar-brand" href="/favorites">Favorites</a>
+        <!--<a class="navbar-brand" href="#">Matches</a>-->
+    </div>
+</div>
+<!--<form class="navbar-form navbar-left">
 <div class="form-group">
 <form>
-    <a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %} ({{userdata.notifications }}){% endif %}</a>
-    <a class="navbar-brand" href="/trending">Trending</a>
-    <a class="navbar-brand" href="/favorites">Favorites</a>
-    <!--<a class="navbar-brand" href="#">Matches</a>-->
+    <div class="input-group search">
+        <input type="text" class="form-control" placeholder="Search">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+        </div>
+    </div>
 </form>
 </div>
+<div class="form-group"> 
+	<a class="iconnavbuttons navbar-brand-icon" href="/settings"><i class="fa fa-cogs fa-2x" alt="settings"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
+<!--<form>
+<div class="form-group"> 
+	<a class="iconnavbuttons navbar-brand-icon" href="/settings"><i class="fa fa-cogs fa-2x" alt="settings"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+        <!--<a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %} ({{userdata.notifications }}){% endif %}</a>
+        <a class="navbar-brand" href="/trending">Trending</a>
+        <a class="navbar-brand" href="/favorites">Favorites</a>
+        <!--<a class="navbar-brand" href="#">Matches</a>-->
+
 {% endblock %}
 {% block navbar-right %}
 <form class='navbar-form navbar-right'>

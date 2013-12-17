@@ -246,6 +246,10 @@ p.countInformation {
     padding: 15px 15px;
 }
 
+.search {
+    max-width:200px;
+}
+
 .iconLink {
     color: #B9B9BF;
     cursor: pointer;
