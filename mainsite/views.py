@@ -64,11 +64,11 @@ def DefaultView(request):
         if v == DEFAULT_MYPOSTS:
             return MyPostsView(request, ignore)
         elif v == DEFAULT_TRENDING:
-            return MyPostsView(request, ignore)###
-        elif v == DEFAULT_FAVORITES:
-            return MyPostsView(request, ignore)
-        elif v == DEFAULT_MATCHES:
-            return MyPostsView(request, ignore)###
+            return TrendingView(request, ignore)
+        elif v == DEFAUL_FAVORITES:
+            return FavoritesView(request, ignore)
+        #elif v == DEFAULT_MATCHES:
+            #return MyPostsView(request, ignore)###
         else:            
             return MyPostsView(request, ignore)##
     else:
@@ -236,7 +236,9 @@ def SettingsView(request, ignore): #testing
             print request.POST
             if 'defaultviewchoice' in request.POST:
                 if request.POST['defaultviewchoice'] in [i[0] for i in defaultChoices()]:
-                    request.user.userdata.defaultview = request.POST['defaultviewchoice']
+                    user = request.user.userdata
+                    user.defaultview = request.POST['defaultviewchoice']
+                    user.save()
                     message = "Saved"
                 else:
                     print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
@@ -429,7 +431,6 @@ class LoginForm(forms.Form):
             attrs={
                 'placeholder':'email',
                 'class':'form-control',
-                'onkeyup':'removeError()',
             }
         )
     )
@@ -439,7 +440,6 @@ class LoginForm(forms.Form):
             attrs={
                 'placeholder':'password',
                 'class':'form-control',
-                'onkeyup':'removeError()',
             }
         )
     )
