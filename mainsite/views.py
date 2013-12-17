@@ -236,6 +236,7 @@ def SettingsView(request, ignore): #testing
     if request.user.is_authenticated():
         message = None
         passwordmessage=None
+        passwordForm = ResetPasswordForm(request.user)
         if request.method == 'POST': # Modify
             print request.POST
             if 'defaultviewchoice' in request.POST:
@@ -245,9 +246,9 @@ def SettingsView(request, ignore): #testing
                 else:
                     print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
                     pass #invalid form field
-            elif 'favoriteID' in request.POST:
+            elif 'favID' in request.POST:
                 try:
-                    f = Favorite.objects.filter(user=request.user, favorite=request.POST['favoriteID'])
+                    f = Favorite.objects.filter(user=request.user, favorite=request.POST['favID'])
                     f.delete()
                 except:
                     pass

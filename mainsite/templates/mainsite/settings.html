@@ -45,7 +45,25 @@ name="defaultviewchoice" type="radio" value="{{ view.0 }}" />
 save button<br>
 Manage Favorites:<br>
 {% for favorite in favorites %}
-{{ favorite.favorite.screenname }}<form action="" method="post">{%csrf_token%}<!-- button stuff... value="{{favorite.favorite.pk}}" ... --></form>
+{{ favorite.favorite.screenname }}
+<form action="" method="post" id="deleteFav{{favorite.favorite.pk}}">{% csrf_token %}
+    <input type="hidden" name="favID" value="{{ favorite.favorite.pk }}">
+       <i class="fa fa-trash-o iconLink" onclick="confirmDeleteFav({{favorite.favorite.pk}})"></i>
+ </form>
+
+
 {% endfor %}
 username  removeButton<br>
+
+ <script type="text/javascript">
+        
+        function confirmDeleteFav(id) {
+            var formID = "#deleteFav";
+            formID = formID.concat(id);
+            if(confirm('Are you sure you would like to unfavorite this user?'))
+                $(formID).submit();                
+        }
+        
+</script>
+
 {% endblock %}
