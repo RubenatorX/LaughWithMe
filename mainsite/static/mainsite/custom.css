@@ -301,6 +301,11 @@ font.PageTitle {
     color: #000000;
 }
 
+font.results {
+    font-weight: bold;
+    font-size: 15pt;
+    color: #22b5da;
+}
 
 button.right {
     float: right;

@@ -191,9 +191,16 @@ def PersonView(request, username): #testing
             user = UserData.objects.all().get(screenname=username)
         except:
             user = None
+            
+        if 'searchBox' in request.POST and request.method == 'POST' and user is None: #search result
+            return redirect("/user/"+request.POST['searchBox'].lstrip().split(" ")[0])
+        if user == None: #the user isn't in the system
+            return render(request, 'mainsite/message.html', {'message':"No Search Results"})
+            
         if request.user.pk == user.pk:
             return redirect('/myposts')
         if request.method == 'POST': # Modify
+            
             if user != None and 'favoriteID' in request.POST and int(request.POST['favoriteID'])==user.pk and user.pk != request.user.pk:
                 request.user.userdata.addFavorite(user)
                 request.user.userdata.save()

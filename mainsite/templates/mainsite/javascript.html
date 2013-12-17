@@ -15,9 +15,9 @@
         }
         
         function searchUser() {
-            var user = $('#searchBox').val();
+            var user = "http://localhost:8000/user/"+$('#searchBox').val();
             alert(user);
-            window.location = "youtube.com";
+            window.location.href = user;
         }
         
 </script>
