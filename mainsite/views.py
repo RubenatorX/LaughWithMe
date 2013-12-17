@@ -419,7 +419,7 @@ def TrendingView(request, ignore):
         templates = [i[0] for i in templateChoices()]
 
             
-        return render(request, 'mainsite/favorites.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
+        return render(request, 'mainsite/trending.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
     else:
         return redirect('/')
 
