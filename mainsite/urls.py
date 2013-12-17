@@ -12,5 +12,7 @@ urlpatterns = patterns('',
     url(r'^myposts(/|$)', views.MyPostsView, name='MyPostsView'),
     url(r'^user/(\w+)', views.PersonView, name='PersonView'),
     url(r'^post/(\d+)', views.PostView, name='PostView'),
-    url(r'^settings(/|$)', views.SettingsView, name='SettingsView')
+    url(r'^settings(/|$)', views.SettingsView, name='SettingsView'),
+    url(r'^favorites(/|$)', views.FavoritesView, name='FavoritesView'),
+    url(r'^trending(/|$)', views.TrendingView, name='TrendingView')
 )

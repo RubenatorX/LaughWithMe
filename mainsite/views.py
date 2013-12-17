@@ -28,7 +28,27 @@ def summarizeComments(post):
     else:
         post.hasComment = True
     return summary
-
+def processPosts(posts, request):
+    COMMENT_PITY = 2
+    COMMENT_LAUGHWITH = 1
+    for post in posts:
+        if post.user.pk == request.user.pk:
+            post.candelete = True
+            for comment in post.comment_set.all():
+                comment.candelete = True
+        else:
+            for comment in post.comment_set.all():
+                if comment.commenter.pk == request.user.pk:
+                    comment.candelete = True
+        for comment in post.comment_set.all():
+                if comment.text!=u'':
+                    comment.notempty = True
+                    post.hasComments = True
+        post.commentSummary = summarizeComments(post)
+        post.commentcount = len(post.comment_set.exclude(text=u''))
+        post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
+        post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
+    return posts
 
 def WelcomeView(request):
     if request.user.is_authenticated():
@@ -67,34 +87,18 @@ def MyPostsView(request, ignore): ## incomplete
                 pass
             pass #return normal stuff
         
-            COMMENT_PITY = 2
-            COMMENT_LAUGHWITH = 1
-            commentcount = 0
-            pitycount = 0
-            laughcount = 0
+           
             posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
 
-            for post in posts:
-                if post.user.pk == request.user.pk:
-                    post.candelete = True
-                    for comment in post.comment_set.all():
-                        comment.candelete = True
-                else:
-                    for comment in post.comment_set.all():
-                        if comment.commenter.pk == request.user.pk:
-                            comment.candelete = True
-           
-                post.commentSummary = summarizeComments(post)
-                post.commentcount = len(post.comment_set.exclude(text=u''))
-                post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
-                post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
+            posts = processPosts(posts, request)
+            
             
             templates = [i[0] for i in templateChoices()]
 
             
             return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
         else:
-            return redirect('/')    
+            return redirect('/')
 def NewPostView(request, ignore):
     if request.user.is_authenticated():
         choices = templateChoices()
@@ -208,20 +212,7 @@ def PersonView(request, username): #testing
             COMMENT_LAUGHWITH = 1
             if user != None:
                 posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
-                for post in posts:
-                    if post.user.pk == request.user.pk:
-                        post.candelete = True
-                        for comment in post.comment_set.all():
-                            comment.candelete = True
-                    else:
-                        for comment in post.comment_set.all():
-                            if comment.commenter.pk == request.user.pk:
-                                comment.candelete = True
-                                
-                    post.commentSummary = summarizeComments(post)
-                    post.commentcount = len(post.comment_set.exclude(text=u''))
-                    post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
-                    post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
+                post = processPosts(posts,request)
                 favorited=request.user.userdata.hasFavorite(user)
                                 
                 print 'favorited=request.user.userdata.hasFavorite(user)=%s' % favorited
@@ -370,35 +361,64 @@ def PostView(request, postid):
                 comment.typename = 'NOTHING'
         '''
 
-        COMMENT_PITY = 2
-        COMMENT_LAUGHWITH = 1
-
-        hasComments = False
+        posts = processPosts(posts,request)
         for post in posts:
-            if post.user.pk == request.user.pk:
-                post.candelete = True
-                for comment in post.comment_set.all():
-                    comment.candelete = True
-            else:
-                for comment in post.comment_set.all():
-                    if comment.commenter.pk == request.user.pk:
-                        comment.candelete = True
-            for comment in post.comment_set.all():
-                if comment.text!=u'':
-                    comment.notempty = True
-                    hasComments = True
-            post.commentcount = len(post.comment_set.exclude(text=u''))
-            post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
-            post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
             if request.user.pk == post.user.pk:
                 post.seen()
        
               
         templates = [i[0] for i in templateChoices()]
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'templates':templates, 'hasComments': hasComments})
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'templates':templates})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
+
+def FavoritesView(request, ignore):
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            '''form = Form(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error'''
+            pass
+        pass #return normal stuff
+        
+        
+        posts = Post.objects.all().filter(user__in=request.user.userdata.getFavorites()).prefetch_related('user', 'comment_set__commenter', 'tags')
+
+        posts = processPosts(posts, request)
+            
+            
+        templates = [i[0] for i in templateChoices()]
+
+            
+        return render(request, 'mainsite/favorites.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
+    else:
+        return redirect('/')
+def TrendingView(request, ignore):
+    if request.user.is_authenticated():
+        if request.method == 'POST': # Modify
+            '''form = Form(request.POST)
+            if form.is_valid():
+                pass #process stuff
+            else:
+                pass #bad error'''
+            pass
+        pass #return normal stuff
+        
+           
+        posts = Post.objects.all().order_by('-date')[:25].prefetch_related('user', 'comment_set__commenter', 'tags')
+
+        posts = processPosts(posts, request)
+            
+            
+        templates = [i[0] for i in templateChoices()]
+
+            
+        return render(request, 'mainsite/favorites.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
+    else:
+        return redirect('/')
 
 class LoginForm(forms.Form):
     email = forms.email = forms.EmailField(
