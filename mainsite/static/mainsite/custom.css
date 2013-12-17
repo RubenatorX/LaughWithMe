@@ -264,7 +264,7 @@ font.settingsHeading {
 font.settingsField {
     font-weight: bold;
     font-size: 11pt;
-    color: #428BCA;
+    color: #000000;
 }
 
 font.commentTypename {
