@@ -44,7 +44,7 @@ def processPosts(posts, request):
                 if comment.text!=u'':
                     comment.notempty = True
                     post.hasComments = True
-        post.hasNotification = post.hasNotification(request.user.userdata):
+        post.hasNotification = post.hasNotification(request.user.userdata)
         post.commentSummary = summarizeComments(post)
         post.commentcount = len(post.comment_set.exclude(text=u''))
         post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))

@@ -22,7 +22,9 @@
                 <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
                     <input type="hidden" name="postID" value="{{ post.pk }}">
                        <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
-                       <i class="fa fa-exclamation iconLink cornerIcon2"></i>
+                       {% if post.hasNotification %}
+                            <i id="notification{{post.pk}}" class="fa fa-exclamation iconLink cornerIcon2" onclick="confirmSeen({{post.pk}})")></i>
+                       {% endif %}                      
                  </form>
                 {% endif %}
                 <!-- Image stuff -->
@@ -62,7 +64,15 @@
 {% endfor %}
 
 <script type="text/javascript">
-       
+         
+        function confirmSeen(id) {
+            var name = '#notification';
+            name = name.concat(id);
+            $(name).hide();
+        }
+         
+         
+         
         function setLocations() {
             var position
             {% for post in posts %}
