@@ -308,6 +308,12 @@ font.results {
     color: #22b5da;
 }
 
+font.noPosts {
+    font-weight: bold;
+    font-size: 18pt;
+    color: #000000;
+}
+
 button.right {
     float: right;
 }

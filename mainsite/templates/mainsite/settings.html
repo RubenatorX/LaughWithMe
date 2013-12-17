@@ -66,7 +66,8 @@
             <div class="smallBR"></div>
             
             <!-- MANAGE FAVORITES -->
-            <font class="settingsHeading">Manage Favorites</font>
+            <font class="settingsHeading">Manage Favorites</font><br>
+            {% if hasFavorites %}
             {% for favorite in favorites %}
             <div class="manageFavorites">
                 <form action="" method="post" id="deleteFav{{favorite.favorite.pk}}">{% csrf_token %}
@@ -76,6 +77,9 @@
                 
             </div>
             {% endfor %}
+            {% else %}
+                No favorites found.
+            {% endif %}
       </div>
       <div class="col-md-3"></div>
     </div>
