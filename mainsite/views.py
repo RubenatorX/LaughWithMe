@@ -40,7 +40,31 @@ def AboutView(request, ignore):
     return render(request, 'mainsite/about.html',{'loginform': LoginForm()})
 def MyPostsView(request, ignore): ## incomplete
         if request.user.is_authenticated():
+        
+            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
+            
             if request.method == 'POST': # Modify
+            
+                if "postID" in request.POST:
+                    post = None
+                    for p in posts:
+                        if p.pk == int(request.POST['postID']):
+                            post = p
+                            break
+                            
+                    if post == None:
+                        pass # this is bad
+                        
+                        
+                    if post.user.pk == request.user.pk:
+                        #go for it
+                        if post.image:
+                            post.image.delete()
+                        post.delete()
+                    else:
+                        #you aren't the user, no permission
+                        pass
+                    return redirect("/myposts")
                 '''form = Form(request.POST)
                 if form.is_valid():
                     pass #process stuff
@@ -54,7 +78,7 @@ def MyPostsView(request, ignore): ## incomplete
             commentcount = 0
             pitycount = 0
             laughcount = 0
-            posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
+            
 
             for post in posts:
                 if post.user.pk == request.user.pk:
@@ -336,6 +360,8 @@ def PostView(request, postid):
                     if comment.commenter.pk == request.user.pk:
                         comment.candelete = True
             post.commentcount = len(post.comment_set.exclude(text=u''))
+            COMMENT_PITY = 2
+            COMMENT_LAUGHWITH = 1
             post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
             post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
        
