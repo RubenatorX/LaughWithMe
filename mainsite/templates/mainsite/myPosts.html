@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-4">
                 {% if post.hasComment %}
-                    <div class="commentcallout" id="postComments{{post.pk}}">
+                    <div class="commentcallout" id="postComments{{post.pk}}" style="display:none;">
                         <pre class="commentinside" id="commentText{{post.pk}}">{{post.commentSummary}}</pre>
                         <b class="sidenotch"></b>
                     </div>
@@ -80,8 +80,10 @@
             {% for post in posts %}
                 var height = $("#innerPost{{post.pk}}").height()+20;
                 position = $("#postdiv{{post.pk}}").offset()
+                $("#postComments{{post.pk}}").show();
                 $("#postComments{{post.pk}}").offset({top: position.top});
                 $("#commentText{{post.pk}}").css('max-height', height);
+                
             {% endfor %}
         }
         

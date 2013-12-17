@@ -43,8 +43,8 @@ a.iconnavbuttons:hover { color: #7AD3E9; text-decoration:none; }
 }
 
 pre.commentinside {
-    border-color:  #22b5da;
-    background-color: #ffffff;
+    border-color:  #F5F5F8;
+    background-color: #F5F5F8;
     overflow: hidden;
 }
 
@@ -55,7 +55,7 @@ pre.commentinside {
     border-width:3px;
     border-style:solid;
     border-color:#22b5da;
-    background-color: #22b5da;
+    background-color: #F5F5F8;
     /* easy rounded corners for modern browsers */
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
