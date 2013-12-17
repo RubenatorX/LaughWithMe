@@ -288,9 +288,11 @@ def PostView(request, postid):
             pass
             message = "post not found " + postid #temp
             return render(request, 'mainsite/message.html', {'message':message}) #temp
-                ##run some sort of search        
+                ##run some sort of search
+        if "noticicationID" in request.POST:
+                posts[0].seen()
         
-        if "postID" in request.POST:
+        elif "postID" in request.POST:
             post = posts[0]
             if post.user.pk == request.user.pk:
                 #go for it

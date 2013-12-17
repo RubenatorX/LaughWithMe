@@ -23,7 +23,7 @@
                     <input type="hidden" name="postID" value="{{ post.pk }}">
                        <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
                        {% if post.hasNotification %}
-                            <i id="notification{{post.pk}}" class="fa fa-exclamation iconLink cornerIcon2" onclick="confirmSeen({{post.pk}})")></i>
+                            <i id="notification{{post.pk}}" class="fa fa-eye iconLink cornerIcon2" onclick="confirmSeen({{post.pk}})")></i>
                        {% endif %}                      
                  </form>
                 {% endif %}
@@ -69,6 +69,7 @@
             var name = '#notification';
             name = name.concat(id);
             $(name).hide();
+	    sendPost(id)
         }
          
          
@@ -89,4 +90,33 @@
         }        
         
 	window.onload = setLocations;
+</script>
+
+<script>
+function sendPost(id)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+var name = "/post/";
+name = name.concat(id);
+xmlhttp.open("POST",name,true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+name = "notificationID="
+name.concat(id)
+xmlhttp.send(name);
+}
 </script>
