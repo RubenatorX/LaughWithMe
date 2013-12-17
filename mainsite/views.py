@@ -235,6 +235,7 @@ def PersonView(request, username): #testing
 def SettingsView(request, ignore): #testing
     if request.user.is_authenticated():
         message = None
+        passwordmessage=None
         if request.method == 'POST': # Modify
             print request.POST
             if 'defaultviewchoice' in request.POST:
@@ -253,8 +254,11 @@ def SettingsView(request, ignore): #testing
             else:
                 passwordForm = ResetPasswordForm(request.user, request.POST)
                 if passwordForm.is_valid():
-                    request.user.set_password(passwordForm.cleaned_data['password'])
-                    passwordForm = ResetPassForm(request.user)
+                    user = request.user
+                    user.set_password(passwordForm.cleaned_data['password'])
+                    user.save()
+                    passwordForm = ResetPasswordForm(request.user)
+                    passwordmessage = "Password Reset Successfully"
                 pass
             '''form = Form(request.POST)
             if form.is_valid():
@@ -269,7 +273,7 @@ def SettingsView(request, ignore): #testing
         favorites = userdata.getFavorites()
         for favorite in favorites:
             print favorite.favorite.screenname
-        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'favorites':favorites, 'passwordForm':passwordForm})
+        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'passwordmessage':passwordmessage, 'favorites':favorites, 'passwordForm':passwordForm})
     else:
         return redirect('/')
     
@@ -536,7 +540,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
-                'onclick':'checkPityBox()',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )
@@ -546,7 +550,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
-                'onclick':'checkLaughWithBox()',
+                'onclick':'checkCheckBoxes(event)',
             }
         )
     )

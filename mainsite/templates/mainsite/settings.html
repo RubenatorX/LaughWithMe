@@ -3,7 +3,7 @@
 {% block body %}
 Email Address: {{ user.email }}<br><br>
 Screen Name: {{ userdata.screenname }}<br><br>
-Update Password: {% if message %}
+Update Password: {% if passwordmessage %}
 <font color=green><i> {{ passwordmessage }}</i></font>
 {% endif %}<br>
 <form action="" method="post">{%csrf_token%}
