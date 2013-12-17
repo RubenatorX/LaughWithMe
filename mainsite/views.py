@@ -333,8 +333,9 @@ def PostView(request, postid):
                     if comment.commenter.pk == request.user.pk:
                         comment.candelete = True
        
-                
-        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata})
+              
+        templates = [i[0] for i in templateChoices()]
+        return render(request, 'mainsite/post.html', {'post':posts[0], 'form':form, 'userdata':request.user.userdata, 'templates':templates})
     else:
         return redirect('/')
     return render(request, 'mainsite/myPosts.html')
@@ -454,6 +455,7 @@ class NewPostForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'image',
+                'onchange':'toggleTemplates()',
             }
         )
     )
@@ -503,7 +505,8 @@ class CommentForm(forms.Form):
             attrs={
                 'placeholder':'Make a comment...',
                 'class':'form-control',
-                'id':'comment',
+                'id':'commentArea',
+                'style':'display:none;',
             }
         )
     )

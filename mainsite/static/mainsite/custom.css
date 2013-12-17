@@ -218,6 +218,12 @@ font.PostTitle-md {
     color: #22b5da;
 }
 
+font.PageTitle {
+    font-weight: bold;
+    font-size: 30pt;
+    color: #000000;
+}
+
 
 button.right {
     float: right;

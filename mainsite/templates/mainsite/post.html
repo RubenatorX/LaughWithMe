@@ -30,7 +30,11 @@
 <div class="row wordwrap">
 	<div>
 	{% if post.image %}
-	    <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage1" />
+        {% ifequal post.template templates.0 %}
+            <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage1" />
+        {% else %}
+            <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage2" align="left"/>
+        {% endifequal %}
 	{% endif %}
     {{ post.text }}
     </div>
@@ -49,7 +53,7 @@
 <div class="smallBR"/>
 
 <!-- Second POST stuff -->
-
+<!--
 <div class="container">
 <div class="col-md-3"></div> 
 <div class="col-md-6 blueBorderPost">
@@ -59,7 +63,6 @@
        <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
  </form>
 {% endif %}
-<!-- Image stuff -->
     <div class="row wordwrap">
     <div>
         {% if post.image %}
@@ -81,7 +84,7 @@
 <div class="col-md-3"></div>
 </div> 
 
-<div class="smallBR"/>
+<div class="smallBR"/>-->
 
 <div class="row">
 <div class="container">

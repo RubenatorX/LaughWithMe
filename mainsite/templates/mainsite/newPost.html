@@ -7,26 +7,24 @@
         <h1 align="center">New Post</h1>
       <!-- Example row of columns -->
       <div class="col-md-4">
-      <h3>Select a template</h3>
-      <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
-        <input type="radio" name="templateType" value="{{ templateChoices.0 }}" checked>
-            <div class="examplePost">
-                <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>         
-            </div>
-        </input>
-            <br>
-        <input type="radio" name="templateType" value="{{ templateChoices.1 }}">
-            <div class="examplePost">
-                <p> <img Width=30% left-margin=2px src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
-            </div>
-        </input>
-            <br>
-        <input type="radio" name="templateType" value="{{ templateChoices.0 }}">
-            <div class="examplePost">
-                 <img Width=100% left-margin=2px src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">
+      <div id="templateSelection" style="display:none;" >
+      <h3 id="templateHeader">Select a template</h3>
+      
+      <form action="" method="post" checked="checked" enctype="multipart/form-data">{% csrf_token %}
+         <input type="radio" name="templateType" value="{{ templateChoices.0 }}" checked>
+            <div class="blueBorder">
+                 <img class="imagecontainer-large" src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">
                  <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
             </div>
         </input>
+        <br>
+        <input type="radio" name="templateType" value="{{ templateChoices.1 }}" >
+            <div class="blueBorder">
+                <p> <img class="imagecontainer-small" align="left" src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
+            </div>
+        </input>
+            <br>
+     </div>
       </div>
       <div class = "col-md-5">
       <!--<h3>Create the Post</h3>-->
@@ -67,6 +65,19 @@
       <div class="col-md-3"></div>
     </div>     
     
+    
+    <script type="text/javascript">
+        
+        function toggleTemplates() {
+            if($("#image").val()) {
+                $('#templateSelection').show();
+            }
+            else
+                $('#templateSelection').hide();
+        }
+        
+        window.onload = toggleTemplates;
+    </script>
     {% endblock %}   
       
    
