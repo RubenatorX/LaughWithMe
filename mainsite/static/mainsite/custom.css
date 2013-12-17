@@ -2,6 +2,10 @@
 
 .btn-success:hover,.btn-success:focus,.btn-success:active,.btn-success.active,.open .dropdown-toggle.btn-success{color:#fff;background-color:#18829D;border-color:#18829D}
 
+.btn-done{color:#fff;background-color:#33D685;border-color:#33D685;color:#ffffff;font-weight:bold; cursor: default;}
+
+.btn-done:hover,.btn-done:focus,.btn-done:active,.btn-done.active,.open .dropdown-toggle.btn-done{color:#fff;background-color:#33D685;border-color:#33D685; cursor: default;}
+
 .row-btm{margin-right:-15px;margin-left:-15px;margin-top:30px}
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
@@ -277,19 +281,29 @@ label.checkbox {
  }
 
 .alignLeft {
+    /*position: absolute;
+    bottom: -5px;
+    left: 5px;*/
     float: left;
     float: bottom;
     width: 50%;
 }
 
 .alignRight {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    /*
     float: right;
     float: bottom;
     width: 50%;
-    text-align: right;
+    text-align: right;*/
 }
- 
- 
+
+a.clickableDiv:link ,a.clickableDiv:visited ,a.clickableDiv:hover ,a.clickableDiv:active {color:#000000;text-decoration:none;} 
+
+a.TitleLink:link ,a.TitleLink:visited ,a.TitleLink:hover ,a.TitleLink:active {text-decoration:none;}  
+
 html,
 body {
    margin:0;

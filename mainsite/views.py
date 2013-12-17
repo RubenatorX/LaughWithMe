@@ -11,6 +11,24 @@ from captcha.fields import ReCaptchaField
 import re
 # Create your views here.
 
+def summarizeComments(post):
+    summary = ""
+    for comment in post.comment_set.all():
+        if comment.text == u"":
+            continue
+        summary += comment.commenter.screenname
+        if comment.typename != None:
+            summary += "- " + comment.typename
+        summary += ": " + comment.text[:47]
+        if len(comment.text) > 47:
+            summary += "..."
+        summary += "\n"
+    if summary == "":
+        post.hasComment = False
+    else:
+        post.hasComment = True
+    return summary
+
 
 def WelcomeView(request):
     if request.user.is_authenticated():
@@ -56,8 +74,6 @@ def MyPostsView(request, ignore): ## incomplete
             laughcount = 0
             posts = Post.objects.all().filter(user=request.user).prefetch_related('user', 'comment_set__commenter', 'tags')
 
-
-            summary = ""
             for post in posts:
                 if post.user.pk == request.user.pk:
                     post.candelete = True
@@ -67,22 +83,8 @@ def MyPostsView(request, ignore): ## incomplete
                     for comment in post.comment_set.all():
                         if comment.commenter.pk == request.user.pk:
                             comment.candelete = True
-                summary = ""
-                for comment in post.comment_set.all():
-                    if comment.text == u"":
-                        continue
-                    summary += comment.commenter.screenname
-                    if comment.typename != None:
-                        summary += "- " + comment.typename
-                    summary += ": " + comment.text[:47]
-                    if len(comment.text) > 47:
-                        summary += "..."
-                    summary += "\n"
-                if summary == "":
-                    post.hasComment = False
-                else:
-                    post.hasComment = True
-                post.commentSummary = summary
+           
+                post.commentSummary = summarizeComments(post)
                 post.commentcount = len(post.comment_set.exclude(text=u''))
                 post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
                 post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
@@ -215,6 +217,8 @@ def PersonView(request, username): #testing
                         for comment in post.comment_set.all():
                             if comment.commenter.pk == request.user.pk:
                                 comment.candelete = True
+                                
+                    post.commentSummary = summarizeComments(post)
                     post.commentcount = len(post.comment_set.exclude(text=u''))
                     post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
                     post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))

@@ -4,7 +4,7 @@
         <div class="col-md-8">
             <div class="col-md-8">
                 <div class="row">
-                    <p class="alignLeft"><font class="PostTitle-md"><a href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
+                    <p class="alignLeft"><font class="PostTitle-md"><a class="TitleLink" href="/post/{{ post.pk }}">{{ post.title }} </a></font></p>
                     <p class="alignRight"><font class="username">{{ post.user.screenname }}</font></span></p>
                 </div>
             </div>
@@ -17,6 +17,7 @@
         <div class="container">
         <div class="col-md-2"></div> 
         <div class="col-md-8" id="postdiv{{post.pk}}">
+            <a class="clickableDiv" style="display:block" href="/post/{{ post.pk }}">
             <div class="col-md-8 blueBorderPost" id="innerPost{{post.pk}}" onclick="">
                 {% if post.candelete %}
                 <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
@@ -42,13 +43,14 @@
                 <div>
                     <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
                 </div>
-            </div>
+            </div></a>
             <div class="col-md-4">
                 {% if post.hasComment %}
+                    <a class="clickableDiv" style="display:block" href="/post/{{ post.pk }}">
                     <div class="commentcallout" id="postComments{{post.pk}}" style="display:none;">
                         <pre class="commentinside" id="commentText{{post.pk}}">{{post.commentSummary}}</pre>
                         <b class="sidenotch"></b>
-                    </div>
+                    </div></a>
                 {% endif %}
             </div>
         </div>
