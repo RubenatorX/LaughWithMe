@@ -30,14 +30,18 @@
         {% if post.candelete %}
         <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
             <input type="hidden" name="postID" value="{{ post.pk }}">
-               <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePostTEST({{post.pk}})"></i>
+               <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
          </form>
         {% endif %}
         <!-- Image stuff -->
         <div class="row wordwrap">
             <div>
             {% if post.image %}
-                <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage1" />
+                {% ifequal post.template templates.0 %}
+                    <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage" />
+                {% else %}
+                    <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage" align="left"/>
+                {% endifequal %}
             {% endif %}
             {{ post.text }}
             </div>

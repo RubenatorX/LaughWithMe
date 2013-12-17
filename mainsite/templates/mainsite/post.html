@@ -31,9 +31,9 @@
 	<div>
 	{% if post.image %}
         {% ifequal post.template templates.0 %}
-            <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage1" />
+            <img class="imagecontainer-large" src="{{ post.image.url }}" alt="image not found" id="postImage" />
         {% else %}
-            <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage2" align="left"/>
+            <img class="imagecontainer-small" src="{{ post.image.url }}" alt="image not found" id="postImage" align="left"/>
         {% endifequal %}
 	{% endif %}
     {{ post.text }}

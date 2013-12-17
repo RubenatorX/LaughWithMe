@@ -69,7 +69,8 @@ def MyPostsView(request, ignore): ## incomplete
                 post.pitycount = len(post.comment_set.all().filter(type=COMMENT_PITY))
                 post.laughcount = len(post.comment_set.all().filter(type=COMMENT_LAUGHWITH))
             
-            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata})
+            templates = [i[0] for i in templateChoices()]
+            return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
         else:
             return redirect('/')    
 def NewPostView(request, ignore):
