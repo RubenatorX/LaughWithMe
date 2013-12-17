@@ -1,22 +1,30 @@
+
 {% extends 'mainsite/base-loggedin.html' %}
 {% block body %}
-<br><br><br>
 
-{% if favorited %}
-Favorited
-{% else %}
-<form action="" method="post">{% csrf_token %}
-    <input type="hidden" name="favoriteID" value="{{ viewuser.pk }}">
-<button type="submit" class="btn btn-success">Favorite</button>
-</form>
-{% endif %}
-<table>
-{% for post in posts %}
-	<tr>
-		<td>{{ post.user.screenname }}: <a href="/post/{{ post.pk }}">{{ post.title }}</a>, {{ post.text }} {% if post.candelete %}<a href="">Delete</a>{% endif %}</td>
-		<td>{% for tag in post.tags.all %}#{{ tag.tag }}, {% endfor %} </td>
-		<td>{% for comment in post.comment_set.all %}{{ comment.commenter.screenname }}:{{ comment.text }}{% if comment.candelete%}<a href="">Delete</a>{% endif %},{% endfor %}</td>
-	</tr>
-{% endfor %}
-</table>
+<div class="container"> 
+<div class="col-md-2"></div> 
+<div class="col-md-6">
+<div class="row">
+    <p class="alignLeft"><font class="PageTitle">{{viewuser.screenname}}</font></p>
+    <p class="alignRight">
+    {% if favorited %}
+        Favorited
+    {% else %}
+        <form action="" method="post">{% csrf_token %}
+            <input type="hidden" name="favoriteID" value="{{ viewuser.pk }}">
+            <button type="submit" class="btn btn-success">Favorite</button>
+        </form>
+    {% endif %}
+    </p>
+</div>
+</div>
+<div class="col-md-4"></div>
+</div>
+
+{% include "mainsite/postlist.html" %}
+
+
+{% include "mainsite/javascript.html" %}
+
 {% endblock %}
