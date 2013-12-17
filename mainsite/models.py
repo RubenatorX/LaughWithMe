@@ -122,6 +122,12 @@ class Post(models.Model):
     template = models.CharField(max_length=5,
                                       choices=templateChoices(),
                                       default=TEMPLATE_LARGE)
+    def hasNotification(self, user):
+        try:
+            Notification.objects.get(user=user, activity=self)
+            return True
+        except:
+            return False
     def notify(self):
         print "post notify self"
         created = Notification.objects.get_or_create(
