@@ -14,11 +14,11 @@
                 
             <!-- PASSWORD CHANGE -->
             <font class="settingsHeading">Update Password</font>
+            {% if passwordmessage %}
+                <font class="green"><i> {{ passwordmessage }}</i></font>
+            {% endif %}
             <div class="row">
             <div class="col-md-8">
-                {% if passwordmessage %}
-                    <font class="green"><i> {{ passwordmessage }}</i></font>
-                {% endif %}<br>
                 <form action="" method="post">{%csrf_token%}
                     <div class="form-group">
                     {% if passwordForm.non_field_errors %}
@@ -43,7 +43,7 @@
             <div class="smallBR"></div>
             
              <!-- HOME PAGE -->
-             <font class="settingsHeading">Default Home Page</font><br>
+             <font class="settingsHeading">Default Home Page</font>
             {% if message %}
                 <font class="green"><i> {{ message }}</i></font>
             {% endif %}
@@ -66,7 +66,7 @@
             <div class="smallBR"></div>
             
             <!-- MANAGE FAVORITES -->
-            <font class="settingsHeading">Manage Favorites</font><br>
+            <font class="settingsHeading">Manage Favorites</font>
             {% for favorite in favorites %}
             <div class="manageFavorites">
                 <form action="" method="post" id="deleteFav{{favorite.favorite.pk}}">{% csrf_token %}
