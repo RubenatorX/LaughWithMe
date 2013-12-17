@@ -17,8 +17,7 @@
         <div class="container">
         <div class="col-md-2"></div> 
         <div class="col-md-8" id="postdiv{{post.pk}}">
-            <a class="clickableDiv" style="display:block" href="/post/{{ post.pk }}">
-            <div class="col-md-8 blueBorderPost" id="innerPost{{post.pk}}" onclick="">
+            <div class="col-md-8 blueBorderPost" id="innerPost{{post.pk}}">
                 {% if post.candelete %}
                 <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
                     <input type="hidden" name="postID" value="{{ post.pk }}">
@@ -26,6 +25,7 @@
                  </form>
                 {% endif %}
                 <!-- Image stuff -->
+                <a class="clickableDiv" style="display:block" onclick="checkClick(event)" href="/post/{{ post.pk }}">
                 <div class="row wordwrap">
                     <div>
                     {% if post.image %}
@@ -42,14 +42,14 @@
                 <div class="smallBR"></div>
                 <div>
                     <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
-                </div>
-            </div></a>
+                </div></a>
+            </div>
             <div class="col-md-4">
                 {% if post.hasComment %}
                     <a class="clickableDiv" style="display:block" href="/post/{{ post.pk }}">
                     <div class="commentcallout" id="postComments{{post.pk}}" style="display:none;">
                         <pre class="commentinside" id="commentText{{post.pk}}">{{post.commentSummary}}</pre>
-                        <b class="sidenotch"></b>
+                        <b id="sidenotch{{post.pk}}" class="sidenotch"></b>
                     </div></a>
                 {% endif %}
             </div>
@@ -71,8 +71,11 @@
                 $("#postComments{{post.pk}}").offset({top: position.top});
                 $("#commentText{{post.pk}}").css('max-height', height);
                 
+                var top =  ($("#commentText{{post.pk}}").height()+20)/2;
+                $('#sidenotch{{post.pk}}').css('top', top);
+                
             {% endfor %}
-        }
+        }        
         
 	window.onload = setLocations;
 </script>

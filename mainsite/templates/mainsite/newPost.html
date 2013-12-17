@@ -9,20 +9,22 @@
       <div class="col-md-4">
       <div id="templateSelection" style="display:none;" >
       <h3 id="templateHeader">Select a template</h3>
-      
       <form action="" method="post" checked="checked" enctype="multipart/form-data">{% csrf_token %}
-         <input type="radio" name="templateType" value="{{ templateChoices.0 }}" checked>
+        <a class="clickableDiv" style="display:block" onclick="checkLG()">
+         <input type="radio" id="LG" name="templateType" value="{{ templateChoices.0 }}" checked>
             <div class="blueBorder">
                  <img class="imagecontainer-large" src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">
                  <p>~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
             </div>
         </input>
+        </a>
         <br>
-        <input type="radio" name="templateType" value="{{ templateChoices.1 }}" >
+        <a class="clickableDiv" style="display:block" onclick="checkSM()">
+        <input id="SM" type="radio" name="templateType" value="{{ templateChoices.1 }}" >
             <div class="blueBorder">
                 <p> <img class="imagecontainer-small" align="left" src="{% static 'mainsite/images/placeholder.jpg' %}" alt="Settings">~~~~~ ~~~~~~~~~~~ ~~~~~ ~~~~~~~~ ~~~~~~~~~ ~~~~~~~~ ~~~~~ ~ ~~~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~~ ~~~~~~ ~~~~ ~~~</p>    
             </div>
-        </input>
+        </input> </a>
             <br>
      </div>
       </div>
@@ -67,6 +69,14 @@
     
     
     <script type="text/javascript">
+        
+        function checkLG() {
+            $('#LG').prop('checked', true);
+        }
+        
+        function checkSM() {
+            $('#SM').prop('checked', true);
+        }
         
         function toggleTemplates() {
             if($("#image").val()) {

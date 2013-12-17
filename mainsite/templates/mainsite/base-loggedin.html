@@ -3,18 +3,18 @@
 
 {% block navbar-left %}
 {% include "mainsite/javascript.html" %}
-<form class='navbar-form navbar-left'>
+<div class='navbar-form navbar-left'>
 <div class="form-group"> 
-	<form>
+	<form action="/user/" method="Post">{% csrf_token %}
         <div class="input-group search">
-            <input id="searchBox" type="text" class="form-control" placeholder="Search">
+            <input name="searchBox" type="text" class="form-control" placeholder="Search">
             <div class="input-group-btn">
-                <button class="btn btn-default" type="submit" onclick="searchUser()"><i class="fa fa-search"></i></button>
+                <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </form>
 </div>
-</form>
+</div>
 <div class="navbar-header">
     <div class="form-group">
         <a class="navbar-brand" href="/myposts">My Posts{% if userdata.notifications %} ({{userdata.notifications }}){% endif %}</a>
