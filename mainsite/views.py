@@ -65,9 +65,9 @@ def MyPostsView(request, ignore): ## incomplete
                     for comment in post.comment_set.all():
                         if comment.commenter.pk == request.user.pk:
                             comment.candelete = True
-                post.commentcount = len(post.comment_set.all().exclude(text=u''))
-                post.pitycount = len(post.comment_set.all().filter(type=COMMENT_PITY))
-                post.laughcount = len(post.comment_set.all().filter(type=COMMENT_LAUGHWITH))
+                post.commentcount = len(post.comment_set.exclude(text=u''))
+                post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
+                post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
             
             templates = [i[0] for i in templateChoices()]
             return render(request, 'mainsite/myPosts.html', {'posts':posts, 'userdata':request.user.userdata, 'templates':templates})
