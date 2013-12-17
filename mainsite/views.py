@@ -202,6 +202,8 @@ def PersonView(request, username): #testing
             pass #return normal stuff
             ##sanatize the screenname if necessary here
             pass
+            COMMENT_PITY = 2
+            COMMENT_LAUGHWITH = 1
             if user != None:
                 posts = Post.objects.all().filter(user=user).prefetch_related('user', 'comment_set__commenter', 'tags')
                 for post in posts:
@@ -324,6 +326,9 @@ def PostView(request, postid):
                 )
                 
                 comment.save()
+                print "comment.post.user.pk=%d and request.user.pk=%d" % (comment.post.user.pk, request.user.pk)
+                if comment.post.user.pk != request.user.pk:
+                    comment.notify()
                 form = CommentForm()
                 
                 return redirect('/post/' + str(posts[0].pk))
@@ -366,6 +371,8 @@ def PostView(request, postid):
             post.commentcount = len(post.comment_set.exclude(text=u''))
             post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
             post.laughcount = len(post.comment_set.filter(type=COMMENT_LAUGHWITH))
+            if request.user.pk == post.user.pk:
+                post.seen()
        
               
         templates = [i[0] for i in templateChoices()]
