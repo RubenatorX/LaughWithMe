@@ -6,7 +6,9 @@
 
 .jumbotron{padding:5px;margin-top:50px;font-size:21px;font-weight:200;line-height:2.1428571435;color:#4D4D4D;background-color:#4D4D4D}
 
-.navbarbuffer{margin-top:60px;color:inherit;background-color:inherit}
+.navbarbuffer{margin-top:50px;color:inherit;background-color:inherit}
+
+.navbarbufferextra{margin-top:60px;color:inherit;background-color:inherit}
 
 .navbar-brand{float:left;padding:15px 25px;font-size:18px;line-height:20px}
 
