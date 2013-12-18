@@ -285,7 +285,7 @@ def SettingsView(request, ignore): #testing
         favorites = userdata.getFavorites()
         #for favorite in favorites:
             #print favorite.favorite.screenname
-        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'passwordmessage':passwordmessage, 'favorites':favorites, 'passwordForm':passwordForm})
+        return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'passwordmessage':passwordmessage, 'favorites':favorites, 'passwordForm':passwordForm, 'hasFavorites':len(favorites)>0,})
     else:
         return redirect('/')
     
