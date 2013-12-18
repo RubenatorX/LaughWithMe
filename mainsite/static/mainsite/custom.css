@@ -403,3 +403,12 @@ img.imagecontainer-small {
 .radiolist {
 	margin: 0 10px 0 10px;
 }
+
+.tag {
+border:1px solid #dddddd;
+background:#dddddd;
+margin: 0px 10px
+width:auto;
+border-radius:20px;
+display:inline
+}

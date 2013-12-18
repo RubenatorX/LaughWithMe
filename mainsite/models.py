@@ -99,7 +99,7 @@ class UserData(models.Model):
 class Tag(models.Model):
     tag = models.CharField(max_length=40, unique=True, validators=[MinLengthValidator(1),
             RegexValidator(
-                r'^[a-zA-Z][a-zA-Z0-9]*',
+                r'^[a-zA-Z][a-zA-Z0-9]*$',
                 'Must be a letter followed by letters and numbers.',
                 'Invalid Hashtag'
             )])
@@ -148,6 +148,16 @@ class Post(models.Model):
             return
     class Meta:
         ordering = ['-date']
+    def addTag(self, tagtext):
+        try:
+            t = Tag.objects.get(tag__iexact=tagtext)
+            t.count = int(t.count)+1
+            t.save()
+            self.tags.add(t)
+        except:
+            t = Tag(tag=tagtext, count=1)
+            t.save()
+            self.tags.add(t)
 class Favorite(models.Model):
     user = models.ForeignKey(UserData, related_name='favoriter')
     favorite = models.ForeignKey(UserData, related_name='favoritee')

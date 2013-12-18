@@ -45,6 +45,10 @@ def processPosts(posts, request):
                     comment.notempty = True
                     post.hasComments = True
         post.hasNotification = post.hasNotification(request.user.userdata)
+        post.tagList = []
+        for tag in post.tags.all()[:5]:
+            post.tagList.append(tag.tag)
+        print post.tagList
         post.commentSummary = summarizeComments(post)
         post.commentcount = len(post.comment_set.exclude(text=u''))
         post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
@@ -106,7 +110,7 @@ def NewPostView(request, ignore):
         tlist = [i[0] for i in choices]
         if request.method == 'POST': # If the form has been submitted...
             form = NewPostForm(request.POST, request.FILES)
-            if form.is_valid():
+            if form.is_valid():                
                 templateType = choices[0][0]
                 if 'templateType' in request.POST and request.POST['templateType'] in tlist:
                     templateType = request.POST['templateType']
@@ -117,6 +121,9 @@ def NewPostView(request, ignore):
                             template=templateType
                 )
                 post.save()
+                for t in form.cleaned_data["tags"]:
+                    post.addTag(t)
+                
                 return redirect('/post/' + str(post.pk))
             else:
                 #return form with errors
@@ -603,6 +610,24 @@ class NewPostForm(forms.Form):
             }
         )
     )
+    def clean_tags(self):
+        form_data = self.cleaned_data
+        if 'tags' in self.cleaned_data:
+            t = [x.strip() for x in self.cleaned_data['tags'].split(',')]
+            l = list(set(i.lower() for i in t))
+            tags=[]
+            for i in t:
+                lc = i.lower()
+                if lc in l and lc != "" and lc != " ":
+                    l.remove(lc)
+                    tags.append(i)
+            cleanedTags = []
+            for tag in tags:
+                if re.match(r'^[a-zA-Z][a-zA-Z0-9]*$', tag):
+                    cleanedTags.append(tag)
+            #self._errors["tags"] = "Old Password incorrect"
+            form_data['tags'] = cleanedTags
+        return form_data['tags']
     
 class CommentForm(forms.Form):
     pity = forms.BooleanField(initial=False, required=False,

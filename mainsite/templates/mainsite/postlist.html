@@ -43,6 +43,9 @@
                     </div>
 
                 <div class="smallBR"></div>
+		{% for tag in post.tagList %}
+			<div class="tag">#{{ tag }}</div>
+		{% endfor %}
                 <div>
                     <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
                 </div></a>
@@ -122,13 +125,7 @@ else
   {// code for IE6, IE5
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
-    }
-  }
+
 var name = "/post/";
 name = name.concat(id);
 xmlhttp.open("POST",name,true);
