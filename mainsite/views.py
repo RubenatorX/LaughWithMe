@@ -623,6 +623,8 @@ class NewPostForm(forms.Form):
                     tags.append(i)
             cleanedTags = []
             for tag in tags:
+                if tag[0] == '#':
+                    tag = tag[1:]
                 if re.match(r'^[a-zA-Z][a-zA-Z0-9]*$', tag):
                     cleanedTags.append(tag)
             #self._errors["tags"] = "Old Password incorrect"
