@@ -48,7 +48,7 @@ def processPosts(posts, request):
         post.tagList = []
         for tag in post.tags.all()[:5]:
             post.tagList.append(tag.tag)
-        print post.tagList
+        #print post.tagList
         post.commentSummary = summarizeComments(post)
         post.commentcount = len(post.comment_set.exclude(text=u''))
         post.pitycount = len(post.comment_set.filter(type=COMMENT_PITY))
@@ -202,7 +202,7 @@ def PersonView(request, username): #testing
         if 'searchBox' in request.POST and request.method == 'POST' and user is None: #search result
             return redirect("/user/"+request.POST['searchBox'].lstrip().split(" ")[0])
         if user == None: #the user isn't in the system
-            return render(request, 'mainsite/message.html', {'message':"No Search Results"})
+            return render(request, 'mainsite/message.html', {'message':"No Search Results", 'userdata':request.user.userdata})
             
 
         if request.user.pk == user.pk:
@@ -229,7 +229,7 @@ def PersonView(request, username): #testing
                 post = processPosts(posts,request)
                 favorited=request.user.userdata.hasFavorite(user)
                                 
-                print 'favorited=request.user.userdata.hasFavorite(user)=%s' % favorited
+                #print 'favorited=request.user.userdata.hasFavorite(user)=%s' % favorited
                 return render(request, 'mainsite/personPage.html', {'posts':posts, 'userdata':request.user.userdata, 'favorited':favorited, 'viewuser':user})
             else:
                 pass
@@ -247,7 +247,7 @@ def SettingsView(request, ignore): #testing
         passwordmessage=None
         passwordForm = ResetPasswordForm(request.user)
         if request.method == 'POST': # Modify
-            print request.POST
+            #print request.POST
             if 'defaultviewchoice' in request.POST:
                 if request.POST['defaultviewchoice'] in [i[0] for i in defaultChoices()]:
                     user = request.user.userdata
@@ -255,7 +255,7 @@ def SettingsView(request, ignore): #testing
                     user.save()
                     message = "Saved"
                 else:
-                    print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
+                    #print  "2 %s not in %s" % (request.POST['defaultviewchoice'], [i[0] for i in defaultChoices()])
                     pass #invalid form field
             elif 'favID' in request.POST:
                 try:
@@ -283,8 +283,8 @@ def SettingsView(request, ignore): #testing
         userdata = request.user.userdata
         user = request.user
         favorites = userdata.getFavorites()
-        for favorite in favorites:
-            print favorite.favorite.screenname
+        #for favorite in favorites:
+            #print favorite.favorite.screenname
         return render(request, 'mainsite/settings.html', {'user':user, 'userdata':userdata, 'choices':defaultChoices(), 'message':message, 'passwordmessage':passwordmessage, 'favorites':favorites, 'passwordForm':passwordForm})
     else:
         return redirect('/')
@@ -601,7 +601,7 @@ class NewPostForm(forms.Form):
             }
         )
     )
-    tags = forms.CharField(required=False, max_length=50,
+    tags = forms.CharField(required=False, max_length=500,
         widget=forms.TextInput(
             attrs={
                 'placeholder':'Add tags...',
@@ -635,7 +635,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'pity',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkPityBox()',
             }
         )
     )
@@ -645,7 +645,7 @@ class CommentForm(forms.Form):
             attrs={
                 'class':'form-control',
                 'id':'laughWith',
-                'onclick':'checkCheckBoxes(event)',
+                'onclick':'checkLaughWithBox()',
             }
         )
     )

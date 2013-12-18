@@ -42,10 +42,14 @@
                     </div>
                     </div>
 
-                <div class="smallBR"></div>
-		{% for tag in post.tagList %}
-			<div class="tag">#{{ tag }}</div>
-		{% endfor %}
+                <div class="BR5"></div>
+        {% if post.tagList %}
+            {% for tag in post.tagList %}
+                <div class="tag">#{{ tag }}</div>
+            {% endfor %}
+            
+            <div class="BR5"></div>
+        {% endif %}
                 <div>
                     <p class="countInformation"> {{ post.pitycount }} pity&nbsp;&nbsp;&nbsp;{{ post.laughcount }}&nbsp;LaughWith&nbsp;&nbsp;&nbsp;{{ post.commentcount }}&nbsp;Comments</p>  
                 </div></a>
@@ -115,7 +119,6 @@ var csrftoken = getCookie('csrftoken');
 
 function sendPost(id)
 {
-alert(id);
 var xmlhttp;
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
