@@ -20,7 +20,7 @@
         <div class="col-md-8" id="postdiv{{post.pk}}">
             <div class="col-md-8 blueBorderPost" id="innerPost{{post.pk}}">
                 {% if post.candelete %}
-                <form action="" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
+                <form action="/post/{{post.pk}}" method="post" id="deletePost{{post.pk}}">{% csrf_token %}
                     <input type="hidden" name="postID" value="{{ post.pk }}">
                        <i class="fa fa-trash-o iconLink cornerIcon" onclick="confirmDeletePost({{post.pk}})"></i>
                        {% if post.hasNotification %}
